@@ -1,0 +1,142 @@
+/* Modern S3 Library File Table Styles */
+body#media-upload {
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.s3cs-files-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.s3cs-files-table th {
+    background: #f8f9fa;
+    color: #1d2327;
+    padding: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e4e7;
+    white-space: nowrap;
+}
+
+.s3cs-files-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f1;
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.s3cs-files-table tr:last-child td {
+    border-bottom: none;
+}
+
+.s3cs-files-table tr:hover td {
+    background-color: #f8f9fa;
+}
+
+.s3cs-files-table .file-name {
+    font-weight: 500;
+    color: #2271b1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.s3cs-files-table .file-size,
+.s3cs-files-table .file-date,
+.s3cs-files-table .file-owner {
+    color: #50575e;
+    font-size: 0.9em;
+}
+
+.button-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    height: auto;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    body#media-upload {
+        padding: 15px;
+    }
+
+    .s3cs-files-table {
+        display: block;
+        margin: 15px 0;
+    }
+
+    .s3cs-files-table thead {
+        display: none;
+    }
+
+    .s3cs-files-table tbody,
+    .s3cs-files-table tr,
+    .s3cs-files-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .s3cs-files-table tr {
+        border-bottom: 1px solid #e2e4e7;
+        padding: 12px;
+    }
+
+    .s3cs-files-table td {
+        padding: 8px 0;
+        border: none;
+    }
+
+    .s3cs-files-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+        color: #1d2327;
+    }
+    
+    /* Override WordPress default hiding behavior for file name and select button */
+    .wp-list-table th.column-primary~th, 
+    .wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td:not(.check-column) {
+        display: block !important;
+		padding:0px!important
+    }
+    
+    /* Make sure file name is always visible */
+    .s3cs-files-table .file-name {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f0f0f1;
+    }
+    
+    /* Style the select button to be more prominent on mobile */
+    .s3cs-files-table .button-small {
+        text-align: center;
+        margin-top: 12px;
+        padding: 10px 16px;
+        height: auto;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 4px;
+        background: #2271b1;
+        color: #fff;
+        border-color: #2271b1;
+    }
+    
+    .s3cs-files-table .button-small:hover,
+    .s3cs-files-table .button-small:focus {
+        background: #135e96;
+        border-color: #135e96;
+        color: #fff;
+    }
+
+}

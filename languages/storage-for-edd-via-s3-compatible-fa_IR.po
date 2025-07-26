@@ -1,0 +1,325 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Storage for EDD via S3-Compatible\n"
+"POT-Creation-Date: 2025-07-15 00:46+0330\n"
+"PO-Revision-Date: 2025-07-20 01:35+0330\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: storage-for-edd-via-s3-compatible.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/class-admin-settings.php:24
+msgid "-- Select Bucket --"
+msgstr "-- انتخاب باکت --"
+
+#: includes/class-admin-settings.php:34
+msgid "-- No buckets found --"
+msgstr "-- باکتی یافت نشد --"
+
+#: includes/class-admin-settings.php:37
+msgid "-- Error loading buckets --"
+msgstr "-- خطا در بارگذاری باکت‌ها --"
+
+#: includes/class-admin-settings.php:40
+msgid "-- Save credentials first to load buckets --"
+msgstr "-- ابتدا اعتبارنامه‌ها را ذخیره کنید تا باکت‌ها بارگذاری شوند --"
+
+#: includes/class-admin-settings.php:46
+msgid "S3 Storage Settings"
+msgstr "تنظیمات فضای ذخیره‌سازی S3"
+
+#: includes/class-admin-settings.php:51
+msgid "Access Key"
+msgstr "کلید دسترسی"
+
+#: includes/class-admin-settings.php:52
+msgid "Enter your S3 Access Key"
+msgstr "کلید دسترسی S3 خود را وارد کنید"
+
+#: includes/class-admin-settings.php:59
+msgid "Secret Key"
+msgstr "کلید خصوصی"
+
+#: includes/class-admin-settings.php:60
+msgid "Enter your S3 Secret Key"
+msgstr "کلید خصوصی S3 خود را وارد کنید"
+
+#: includes/class-admin-settings.php:67
+msgid "Endpoint URL"
+msgstr "آدرس اینترنتی"
+
+#: includes/class-admin-settings.php:68
+msgid "Enter your S3 compatible endpoint URL (e.g. https://s3.example.com)"
+msgstr ""
+"آدرس اینترنتی سازگار با S3 خود را وارد کنید (مثلا https://s3.example.com)"
+
+#: includes/class-admin-settings.php:75
+msgid "Bucket Name"
+msgstr "نام باکت"
+
+#: includes/class-admin-settings.php:77
+msgid "Select your S3 bucket"
+msgstr "باکت S3 خود را انتخاب کنید"
+
+#: includes/class-admin-settings.php:78
+msgid "Please save your S3 credentials first to enable bucket selection"
+msgstr "لطفا ابتدا اعتبارنامه‌های S3 خود را ذخیره کنید تا انتخاب باکت فعال شود"
+
+#: includes/class-admin-settings.php:86
+msgid "Download Link Expiry (minutes)"
+msgstr "انقضای لینک دانلود (دقیقه)"
+
+#: includes/class-admin-settings.php:87
+msgid "How many minutes should the download link be valid?"
+msgstr "لینک دانلود برای چند دقیقه معتبر باشد؟"
+
+#: includes/class-admin-settings.php:98
+msgid "S3 Storage"
+msgstr "فضای ذخیره‌سازی S3"
+
+#: includes/class-main-plugin.php:61
+msgid "Storage for EDD via S3-Compatible:"
+msgstr "ذخیره‌سازی برای EDD از طریق S3-Compatible:"
+
+#: includes/class-main-plugin.php:62
+msgid "Access Key and Secret Key are required for S3 storage to work properly."
+msgstr "کلید دسترسی و کلید خصوصی برای عملکرد صحیح فضای ذخیره‌سازی S3 ضروری است."
+
+#: includes/class-main-plugin.php:64 includes/class-media-library.php:68
+msgid "Configure S3 Settings"
+msgstr "پیکربندی تنظیمات S3"
+
+#: includes/class-media-library.php:26 includes/class-media-library.php:223
+#: includes/class-media-library.php:290
+msgid "Upload to S3"
+msgstr "آپلود در S3"
+
+#: includes/class-media-library.php:27
+msgid "S3 Library"
+msgstr "کتابخانه S3"
+
+#: includes/class-media-library.php:36 includes/class-media-library.php:200
+#: includes/class-s3-uploader.php:147
+msgid "Security check failed."
+msgstr "بررسی امنیتی ناموفق بود."
+
+#: includes/class-media-library.php:60
+msgid "S3 File Browser"
+msgstr "مرور فایل های S3"
+
+#: includes/class-media-library.php:63
+msgid "No S3 bucket selected"
+msgstr "باکت S3 انتخاب نشده است"
+
+#: includes/class-media-library.php:64
+msgid ""
+"Please configure your S3 settings and select a bucket before browsing files."
+msgstr ""
+"لطفا تنظیمات S3 خود را پیکربندی کرده و قبل از مرور فایل‌ها، یک باکت انتخاب "
+"کنید."
+
+#: includes/class-media-library.php:65
+msgid ""
+"You need to configure Access Key, Secret Key, Endpoint, and select a bucket "
+"to browse S3 files."
+msgstr ""
+"برای مرور فایل‌های S3 باید کلید دسترسی، کلید مخفی، نقطه پایانی را پیکربندی "
+"کرده و یک باکت انتخاب کنید."
+
+#: includes/class-media-library.php:90
+msgid "Select a file from S3"
+msgstr "فایلی را از S3 انتخاب کنید"
+
+#: includes/class-media-library.php:94
+msgid "Connection Error"
+msgstr "خطای اتصال"
+
+#: includes/class-media-library.php:95
+msgid "Unable to connect to your S3 storage."
+msgstr "امکان اتصال به فضای ذخیره‌سازی S3 شما وجود ندارد."
+
+#: includes/class-media-library.php:97
+msgid "Error details:"
+msgstr "جزئیات خطا:"
+
+#: includes/class-media-library.php:102 includes/class-media-library.php:186
+msgid "Check S3 Settings"
+msgstr "بررسی تنظیمات S3"
+
+#: includes/class-media-library.php:110
+#, php-format
+msgid "Browsing: %s"
+msgstr "در حال مرور: %s"
+
+#: includes/class-media-library.php:112
+#, php-format
+msgid "Browsing bucket: %s"
+msgstr "در حال مرور باکت: %s"
+
+#: includes/class-media-library.php:121 includes/class-media-library.php:143
+msgid "File Name"
+msgstr "نام فایل"
+
+#: includes/class-media-library.php:122 includes/class-media-library.php:146
+msgid "File Size"
+msgstr "حجم فایل"
+
+#: includes/class-media-library.php:123 includes/class-media-library.php:149
+msgid "Last Modified"
+msgstr "آخرین اصلاح"
+
+#: includes/class-media-library.php:124 includes/class-media-library.php:152
+msgid "Actions"
+msgstr "عملیات"
+
+#: includes/class-media-library.php:139 includes/class-media-library.php:140
+#: includes/class-media-library.php:378
+msgid "Unknown"
+msgstr "نامشخص"
+
+#: includes/class-media-library.php:157
+msgid "Select File"
+msgstr "انتخاب فایل"
+
+#: includes/class-media-library.php:166
+msgid "No files found"
+msgstr "فایلی یافت نشد"
+
+#: includes/class-media-library.php:170
+#, php-format
+msgid "No files found in the path: %s"
+msgstr "هیچ فایلی در مسیر یافت نشد: %s"
+
+#: includes/class-media-library.php:172
+#, php-format
+msgid "No files found in bucket: %s"
+msgstr "فایلی در باکت یافت نشد: %s"
+
+#: includes/class-media-library.php:177
+msgid "Possible reasons:"
+msgstr "دلایل احتمالی:"
+
+#: includes/class-media-library.php:179
+msgid "The bucket or path is empty"
+msgstr "باکت یا مسیر خالی است"
+
+#: includes/class-media-library.php:180
+msgid "Your S3 credentials lack proper read permissions"
+msgstr "اعتبارنامه‌های S3 شما فاقد مجوزهای خواندن مناسب هستند"
+
+#: includes/class-media-library.php:181
+msgid "The bucket name or endpoint URL is incorrect"
+msgstr "نام باکت یا نشانی اینترنتی نقطه پایانی نادرست است"
+
+#: includes/class-media-library.php:227
+#, php-format
+msgid "Uploading to directory: %s"
+msgstr "آپلود به دایرکتوری: %s"
+
+#: includes/class-media-library.php:229
+#, php-format
+msgid "Uploading to bucket: %s"
+msgstr "آپلود در باکت: %s"
+
+#: includes/class-media-library.php:240 includes/class-s3-uploader.php:46
+#: includes/class-s3-uploader.php:53 includes/class-s3-uploader.php:74
+#: includes/class-s3-uploader.php:77 includes/class-s3-uploader.php:136
+#: includes/class-s3-uploader.php:147 includes/class-s3-uploader.php:157
+#: includes/class-s3-uploader.php:163 includes/class-s3-uploader.php:174
+msgid "Error"
+msgstr "خطا"
+
+#: includes/class-media-library.php:253
+msgid "Upload Successful"
+msgstr "آپلود با موفقیت انجام شد"
+
+#. translators: %s: File name.
+#: includes/class-media-library.php:257
+#, php-format
+msgid "File %s uploaded successfully!"
+msgstr "فایل %s با موفقیت اپلود شد!"
+
+#: includes/class-media-library.php:266
+msgid "Use this file in your Download"
+msgstr "از این فایل در دانلودهای خود استفاده کنید"
+
+#. translators: %s: Maximum upload file size.
+#: includes/class-media-library.php:284
+#, php-format
+msgid "Maximum upload file size: %s"
+msgstr "حداکثر حجم فایل برای آپلود: %s"
+
+#: includes/class-media-library.php:437
+msgid "File selected successfully!"
+msgstr "فایل با موفقیت انتخاب شد!"
+
+#: includes/class-media-library.php:438
+msgid "Error selecting file. Please try again."
+msgstr "خطا در انتخاب فایل. لطفاً دوباره تلاش کنید."
+
+#: includes/class-media-library.php:444
+msgid "File size too large. Maximum allowed size is"
+msgstr "حجم فایل خیلی بزرگ است. حداکثر اندازه مجاز"
+
+#: includes/class-s3-uploader.php:29
+msgid "You do not have permission to upload files to S3."
+msgstr "شما اجازه آپلود فایل‌ها در S3 را ندارید."
+
+#: includes/class-s3-uploader.php:46
+msgid "No file selected for upload."
+msgstr "فایلی برای آپلود انتخاب نشده است."
+
+#: includes/class-s3-uploader.php:53
+msgid "S3 configuration is incomplete."
+msgstr "پیکربندی S3 ناقص است."
+
+#: includes/class-s3-uploader.php:74
+msgid "Unable to read uploaded file."
+msgstr "قادر به خواندن فایل آپلود شده نیست."
+
+#: includes/class-s3-uploader.php:77 includes/class-s3-uploader.php:163
+msgid "Invalid file upload."
+msgstr "آپلود فایل نامعتبر است."
+
+#: includes/class-s3-uploader.php:136
+msgid "An error occurred while attempting to upload your file."
+msgstr "هنگام تلاش برای آپلود فایل شما خطایی رخ داد."
+
+#: includes/class-s3-uploader.php:157
+msgid "Please select a file to upload."
+msgstr "لطفا فایلی را برای آپلود انتخاب کنید."
+
+#. translators: %s: Maximum upload file size.
+#: includes/class-s3-uploader.php:173
+#, php-format
+msgid "File size too large. Maximum allowed size is %s"
+msgstr "حجم فایل بیش از حد بزرگ است. حداکثر حجم مجاز %s است"
+
+#. Plugin Name of the plugin/theme
+msgid "Storage for EDD via S3-Compatible"
+msgstr "فضای ذخیره‌سازی سازگار با S3 برای EDD"
+
+#. Description of the plugin/theme
+msgid ""
+"Enable secure cloud storage and delivery of your digital products through S3-"
+"compatible services for Easy Digital Downloads."
+msgstr ""
+"فعال‌سازی ذخیره‌سازی ابری امن و تحویل محصولات دیجیتال شما از طریق سرویس‌های "
+"سازگار با S3 برای Easy Digital Downloads."
+
+#. Author of the plugin/theme
+msgid "thisismrez"
+msgstr ""

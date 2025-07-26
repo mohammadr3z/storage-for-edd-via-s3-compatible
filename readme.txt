@@ -1,6 +1,6 @@
 === Storage for EDD via S3-Compatible ===
 author: mohammadr3z
-Contributors: mohammadr3z
+Contributors:
 Tags: easy-digital-downloads, s3, storage, digital-downloads, file-storage
 Requires at least: 5.0
 Tested up to: 6.8

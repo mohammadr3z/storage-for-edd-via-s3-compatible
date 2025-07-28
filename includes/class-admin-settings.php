@@ -88,7 +88,7 @@ class S3CS_EDD_S3_Admin_Settings {
                 'desc' => __('How many minutes should the download link be valid?', 'storage-for-edd-via-s3-compatible'),
                 'type' => 'text',
                 'size' => 'small',
-                'std'  => '5'
+                'std'  => '3'
             )
         );
         

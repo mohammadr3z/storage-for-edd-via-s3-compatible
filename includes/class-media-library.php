@@ -30,10 +30,17 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
     }
     
     public function registerS3LibTab() {
+        // Check nonce for GET requests with parameters
+        if (!empty($_GET) && (isset($_GET['path']) || isset($_GET['_wpnonce']))) {
+            if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'media-form')) {
+                wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
+            }
+        }
+        
         if (!empty($_POST)) {
             // Nonce check for security
             if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'media-form')) {
-                wp_die(__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
+                wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
             }
             
             $error = media_upload_form_handler();
@@ -107,8 +114,10 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                 <p class="description" style="margin-bottom: 15px;">
                     <?php 
                     if (!empty($path)) {
+                        // translators: %s: Directory path being browsed.
                         printf(esc_html__('Browsing: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($path) . '</strong>');
                     } else {
+                        // translators: %s: S3 bucket name being browsed.
                         printf(esc_html__('Browsing bucket: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($this->config->getBucket()) . '</strong>');
                     }
                     ?>
@@ -136,8 +145,8 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                             
                             // Get file details
                             $details = isset($file_details[$file]) ? $file_details[$file] : array();
-                            $file_size = isset($details['size']) ? $this->formatFileSize($details['size']) : __('Unknown', 'storage-for-edd-via-s3-compatible');
-                            $last_modified = isset($details['last_modified']) ? $this->formatHumanDate($details['last_modified']) : __('Unknown', 'storage-for-edd-via-s3-compatible');
+                            $file_size = isset($details['size']) ? $this->formatFileSize($details['size']) : esc_html__('Unknown', 'storage-for-edd-via-s3-compatible');
+                            $last_modified = isset($details['last_modified']) ? $this->formatHumanDate($details['last_modified']) : esc_html__('Unknown', 'storage-for-edd-via-s3-compatible');
                             ?>
                             <tr>
                                 <td class="column-primary" data-label="<?php esc_attr_e('File Name', 'storage-for-edd-via-s3-compatible'); ?>">
@@ -167,8 +176,10 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                     <p>
                         <?php 
                         if (!empty($path)) {
+                            // translators: %s: Directory path where no files were found.
                             printf(esc_html__('No files found in the path: %s', 'storage-for-edd-via-s3-compatible'), '<code class="s3cs-path">' . esc_html($path) . '</code>');
                         } else {
+                            // translators: %s: S3 bucket name where no files were found.
                             printf(esc_html__('No files found in bucket: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($this->config->getBucket()) . '</strong>');
                         }
                         ?>
@@ -194,10 +205,17 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
     }
     
     public function registerS3UploadTab() {
+        // Check nonce for GET requests with parameters
+        if (!empty($_GET) && (isset($_GET['path']) || isset($_GET['_wpnonce']))) {
+            if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'media-form')) {
+                wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
+            }
+        }
+        
         if (!empty($_POST)) {
             // Nonce check for security
             if (!isset($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'media-form')) {
-                wp_die(__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
+                wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
             }
             
             $error = media_upload_form_handler();
@@ -224,8 +242,10 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
             <div class="description">
                 <?php 
                 if (!empty($path)) {
+                    // translators: %s: Directory path where files are being uploaded.
                     printf(esc_html__('Uploading to directory: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($path) . '</strong>');
                 } else {
+                    // translators: %s: S3 bucket name where files are being uploaded.
                     printf(esc_html__('Uploading to bucket: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($this->config->getBucket()) . '</strong>');
                 }
                 ?>
@@ -305,6 +325,12 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
      * @return string
      */
     private function get_path() {
+        // Additional security check - verify nonce if path parameter is present
+        if (!empty($_GET['path'])) {
+            if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'media-form')) {
+                wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
+            }
+        }
         return !empty($_GET['path']) ? sanitize_text_field(wp_unslash($_GET['path'])) : '';
     }
     
@@ -395,7 +421,7 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                     $details[$key] = array(
                         'size' => (int)$object->Size,
                         'last_modified' => (string)$object->LastModified,
-                        'owner' => isset($object->Owner->DisplayName) ? (string)$object->Owner->DisplayName : __('Unknown', 'storage-for-edd-via-s3-compatible')
+                        'owner' => isset($object->Owner->DisplayName) ? (string)$object->Owner->DisplayName : esc_html__('Unknown', 'storage-for-edd-via-s3-compatible')
                     );
                 }
             }
@@ -454,14 +480,14 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
         
         // Localize scripts
         wp_localize_script('s3cs-media-library', 's3cs_edd_i18n', array(
-            'file_selected_success' => __('File selected successfully!', 'storage-for-edd-via-s3-compatible'),
-            'file_selected_error' => __('Error selecting file. Please try again.', 'storage-for-edd-via-s3-compatible')
+            'file_selected_success' => esc_html__('File selected successfully!', 'storage-for-edd-via-s3-compatible'),
+            'file_selected_error' => esc_html__('Error selecting file. Please try again.', 'storage-for-edd-via-s3-compatible')
         ));
         
         wp_add_inline_script('s3cs-media-library', 'var s3cs_edd_url_prefix = "' . esc_js(S3CS_EDD_S3_Config::URL_PREFIX) . '";', 'before');
         
         wp_localize_script('s3cs-upload', 's3cs_edd_i18n', array(
-            'file_size_too_large' => __('File size too large. Maximum allowed size is', 'storage-for-edd-via-s3-compatible')
+            'file_size_too_large' => esc_html__('File size too large. Maximum allowed size is', 'storage-for-edd-via-s3-compatible')
         ));
         
         // Add URL prefix as inline script

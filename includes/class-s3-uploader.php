@@ -144,7 +144,7 @@ add_action('admin_post_nopriv_s3cs_upload', array($this, 'performFileUpload'));
     private function validateUpload() {
         // Check nonce first
         if (!isset($_POST['s3cs_edd_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['s3cs_edd_nonce'])), 's3cs_edd_upload')) {
-            wp_die(__('Security check failed.', 'storage-for-edd-via-s3-compatible'), __('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
+            wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
             return false;
         }
         
@@ -154,13 +154,19 @@ add_action('admin_post_nopriv_s3cs_upload', array($this, 'performFileUpload'));
             !isset($_FILES['s3cs_edd_file']['tmp_name']) ||
             !isset($_FILES['s3cs_edd_file']['size']) ||
             empty($_FILES['s3cs_edd_file']['name'])) {
-            wp_die(__('Please select a file to upload.', 'storage-for-edd-via-s3-compatible'), __('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
+            wp_die(esc_html__('Please select a file to upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
             return false;
         }
         
         // Check uploaded file security
         if (!is_uploaded_file($_FILES['s3cs_edd_file']['tmp_name'])) {
-            wp_die(__('Invalid file upload.', 'storage-for-edd-via-s3-compatible'), __('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
+            wp_die(esc_html__('Invalid file upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
+            return false;
+        }
+        
+        // Validate file type
+        if (!$this->isAllowedFileType($_FILES['s3cs_edd_file']['name'])) {
+            wp_die(esc_html__('File type not allowed. Only safe file types are permitted.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
             return false;
         }
         
@@ -175,6 +181,50 @@ add_action('admin_post_nopriv_s3cs_upload', array($this, 'performFileUpload'));
                 array('back_link' => true)
             );
             return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Check if file type is allowed (simple extension-based validation)
+     * @param string $filename
+     * @return bool
+     */
+    private function isAllowedFileType($filename) {
+        // Get file extension
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        
+        // Allowed safe extensions for digital products
+        $allowedExtensions = array(
+            'zip', 'rar', '7z', 'tar', 'gz',
+            'pdf', 'doc', 'docx', 'txt', 'rtf',
+            'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg',
+            'mp3', 'wav', 'ogg', 'flac', 'm4a',
+            'mp4', 'avi', 'mov', 'wmv', 'flv', 'webm',
+            'epub', 'mobi', 'azw', 'azw3',
+            'xls', 'xlsx', 'csv',
+            'ppt', 'pptx',
+            'css', 'js', 'json', 'xml'
+        );
+        
+        // Check if extension is in allowed list
+        if (!in_array($extension, $allowedExtensions, true)) {
+            return false;
+        }
+        
+        // Block dangerous file patterns
+        $dangerousPatterns = array(
+            '.php', '.phtml', '.asp', '.aspx', '.jsp', '.cgi', '.pl', '.py',
+            '.exe', '.com', '.bat', '.cmd', '.scr', '.vbs', '.jar',
+            '.sh', '.bash', '.zsh', '.fish', '.htaccess', '.htpasswd'
+        );
+        
+        $lowerFilename = strtolower($filename);
+        foreach ($dangerousPatterns as $pattern) {
+            if (strpos($lowerFilename, $pattern) !== false) {
+                return false;
+            }
         }
         
         return true;

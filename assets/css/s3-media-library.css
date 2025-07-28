@@ -113,9 +113,7 @@ body#media-upload {
     /* Make sure file name is always visible */
     .s3cs-files-table .file-name {
         font-size: 1rem;
-        margin-bottom: 10px;
         padding-bottom: 10px;
-        border-bottom: 1px solid #f0f0f1;
     }
     
     /* Style the select button to be more prominent on mobile */

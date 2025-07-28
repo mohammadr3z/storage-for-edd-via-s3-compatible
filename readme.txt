@@ -1,10 +1,10 @@
 === Storage for EDD via S3-Compatible ===
 author: mohammadr3z
-Contributors:
-Tags: easy-digital-downloads, s3, storage, digital-downloads, file-storage
+Contributors: mohammadr3z
+Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.0.7.2
+Stable tag: 1.0.8
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,13 +24,6 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
 * **Configurable Expiry**: Set custom expiration times for download links
 * **Security First**: Built with WordPress security best practices
 * **Developer Friendly**: Clean, well-documented code with hooks and filters
-
-= Requirements =
-
-* Easy Digital Downloads plugin (active)
-* PHP 7.4 or higher
-* Composer dependencies (included in release)
-* S3-compatible storage account
 
 == Installation ==
 
@@ -86,19 +79,24 @@ This plugin works with any S3-compatible storage service including:
 
 = How secure are the download links? =
 
-The plugin generates presigned URLs with configurable expiration times. These URLs are temporary and cannot be shared or reused after expiration, ensuring your digital products remain secure.
+The plugin generates presigned URLs with configurable expiration times (default 3 minutes). These URLs are temporary and cannot be shared or reused after expiration, ensuring your digital products remain secure.
 
-= Can I migrate existing files to S3? =
+= What file types are supported for upload? =
 
-Yes, you can upload your existing files to S3 storage and update the file URLs in your downloads. The plugin provides an easy interface for uploading and managing files.
+The plugin supports safe file types including:
+* Archives: ZIP, RAR, 7Z, TAR, GZ
+* Documents: PDF, DOC, DOCX, TXT, RTF, XLS, XLSX, CSV, PPT, PPTX
+* Images: JPG, JPEG, PNG, GIF, WEBP, SVG
+* Audio: MP3, WAV, OGG, FLAC, M4A
+* Video: MP4, AVI, MOV, WMV, FLV, WEBM
+* E-books: EPUB, MOBI, AZW, AZW3
+* Web files: CSS, JS, JSON, XML
 
-= What happens if S3 is unavailable? =
+Dangerous file types (executables, scripts) are automatically blocked for security.
 
-If your S3 service is temporarily unavailable, download attempts will fail gracefully. The plugin includes error handling and logging for troubleshooting.
+= Can I browse existing files in my S3 storage? =
 
-= Can I use custom domains with my S3 storage? =
-
-Yes, you can configure custom endpoint URLs in the plugin settings to use your own domain or CDN.
+Yes, the plugin includes an S3 Library feature that allows you to browse and select existing files from your S3 bucket directly within the WordPress admin interface.
 
 == Screenshots ==
 
@@ -107,6 +105,16 @@ Yes, you can configure custom endpoint URLs in the plugin settings to use your o
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.0.8 =
+* Added: File type validation with enhanced security against dangerous file uploads
+* Added: Translators comments for all internationalization strings with placeholders
+* Improved: Better internationalization support for translators
+* Improved: Debug logging now uses WordPress standards with proper sanitization
+* Fixed: All output from internationalization functions properly escaped to prevent XSS vulnerabilities
+* Fixed: Proper nonce verification for all form data processing to prevent CSRF attacks
+* Fixed: Removed production-unsafe debug code and replaced with WordPress-compatible logging
+* Changed: Default download link expiry reduced to 3 minutes for better security
 
 = 1.0.7 =
 * Automatically prepended `https://` to Endpoint URL to prevent XML parsing errors.
@@ -150,7 +158,9 @@ Yes, you can configure custom endpoint URLs in the plugin settings to use your o
 
 == Support ==
 
-For support and documentation, please visit: https://Mohammadr3z.com/
+For support and bug reports, please use the WordPress.org plugin support forum.
+
+If you find this plugin helpful, please consider leaving a review on WordPress.org.
 
 == Privacy Policy ==
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Storage for EDD via S3-Compatible\n"
-"POT-Creation-Date: 2025-07-15 00:46+0330\n"
+"POT-Creation-Date: 2025-07-29 01:08+0330\n"
 "PO-Revision-Date: 2025-07-09 14:38+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -62,47 +62,49 @@ msgid "Endpoint URL"
 msgstr ""
 
 #: includes/class-admin-settings.php:68
-msgid "Enter your S3 compatible endpoint URL (e.g. https://s3.example.com)"
+msgid ""
+"Enter your S3 compatible endpoint URL (e.g. https://s3.example.com). The URL should "
+"start with https:// for proper functionality."
 msgstr ""
 
-#: includes/class-admin-settings.php:75
+#: includes/class-admin-settings.php:76
 msgid "Bucket Name"
 msgstr ""
 
-#: includes/class-admin-settings.php:77
+#: includes/class-admin-settings.php:78
 msgid "Select your S3 bucket"
 msgstr ""
 
-#: includes/class-admin-settings.php:78
+#: includes/class-admin-settings.php:79
 msgid "Please save your S3 credentials first to enable bucket selection"
 msgstr ""
 
-#: includes/class-admin-settings.php:86
+#: includes/class-admin-settings.php:87
 msgid "Download Link Expiry (minutes)"
 msgstr ""
 
-#: includes/class-admin-settings.php:87
+#: includes/class-admin-settings.php:88
 msgid "How many minutes should the download link be valid?"
 msgstr ""
 
-#: includes/class-admin-settings.php:98
+#: includes/class-admin-settings.php:99
 msgid "S3 Storage"
 msgstr ""
 
-#: includes/class-main-plugin.php:61
+#: includes/class-main-plugin.php:60
 msgid "Storage for EDD via S3-Compatible:"
 msgstr ""
 
-#: includes/class-main-plugin.php:62
+#: includes/class-main-plugin.php:61
 msgid "Access Key and Secret Key are required for S3 storage to work properly."
 msgstr ""
 
-#: includes/class-main-plugin.php:64 includes/class-media-library.php:68
+#: includes/class-main-plugin.php:63 includes/class-media-library.php:75
 msgid "Configure S3 Settings"
 msgstr ""
 
-#: includes/class-media-library.php:26 includes/class-media-library.php:223
-#: includes/class-media-library.php:290
+#: includes/class-media-library.php:26 includes/class-media-library.php:241
+#: includes/class-media-library.php:310
 msgid "Upload to S3"
 msgstr ""
 
@@ -110,161 +112,169 @@ msgstr ""
 msgid "S3 Library"
 msgstr ""
 
-#: includes/class-media-library.php:36 includes/class-media-library.php:200
-#: includes/class-s3-uploader.php:147
+#: includes/class-media-library.php:36 includes/class-media-library.php:43
+#: includes/class-media-library.php:211 includes/class-media-library.php:218
+#: includes/class-media-library.php:331 includes/class-s3-uploader.php:147
 msgid "Security check failed."
 msgstr ""
 
-#: includes/class-media-library.php:60
+#: includes/class-media-library.php:67
 msgid "S3 File Browser"
 msgstr ""
 
-#: includes/class-media-library.php:63
+#: includes/class-media-library.php:70
 msgid "No S3 bucket selected"
 msgstr ""
 
-#: includes/class-media-library.php:64
+#: includes/class-media-library.php:71
 msgid "Please configure your S3 settings and select a bucket before browsing files."
 msgstr ""
 
-#: includes/class-media-library.php:65
+#: includes/class-media-library.php:72
 msgid ""
 "You need to configure Access Key, Secret Key, Endpoint, and select a bucket to browse "
 "S3 files."
 msgstr ""
 
-#: includes/class-media-library.php:90
+#: includes/class-media-library.php:97
 msgid "Select a file from S3"
 msgstr ""
 
-#: includes/class-media-library.php:94
+#: includes/class-media-library.php:101
 msgid "Connection Error"
 msgstr ""
 
-#: includes/class-media-library.php:95
+#: includes/class-media-library.php:102
 msgid "Unable to connect to your S3 storage."
 msgstr ""
 
-#: includes/class-media-library.php:97
+#: includes/class-media-library.php:104
 msgid "Error details:"
 msgstr ""
 
-#: includes/class-media-library.php:102 includes/class-media-library.php:186
+#: includes/class-media-library.php:109 includes/class-media-library.php:197
 msgid "Check S3 Settings"
 msgstr ""
 
-#: includes/class-media-library.php:110
+#. translators: %s: Directory path being browsed.
+#: includes/class-media-library.php:118
 #, php-format
 msgid "Browsing: %s"
 msgstr ""
 
-#: includes/class-media-library.php:112
+#. translators: %s: S3 bucket name being browsed.
+#: includes/class-media-library.php:121
 #, php-format
 msgid "Browsing bucket: %s"
 msgstr ""
 
-#: includes/class-media-library.php:121 includes/class-media-library.php:143
+#: includes/class-media-library.php:130 includes/class-media-library.php:152
 msgid "File Name"
 msgstr ""
 
-#: includes/class-media-library.php:122 includes/class-media-library.php:146
+#: includes/class-media-library.php:131 includes/class-media-library.php:155
 msgid "File Size"
 msgstr ""
 
-#: includes/class-media-library.php:123 includes/class-media-library.php:149
+#: includes/class-media-library.php:132 includes/class-media-library.php:158
 msgid "Last Modified"
 msgstr ""
 
-#: includes/class-media-library.php:124 includes/class-media-library.php:152
+#: includes/class-media-library.php:133 includes/class-media-library.php:161
 msgid "Actions"
 msgstr ""
 
-#: includes/class-media-library.php:139 includes/class-media-library.php:140
-#: includes/class-media-library.php:378
+#: includes/class-media-library.php:148 includes/class-media-library.php:149
+#: includes/class-media-library.php:424
 msgid "Unknown"
 msgstr ""
 
-#: includes/class-media-library.php:157
+#: includes/class-media-library.php:166
 msgid "Select File"
 msgstr ""
 
-#: includes/class-media-library.php:166
+#: includes/class-media-library.php:175
 msgid "No files found"
 msgstr ""
 
-#: includes/class-media-library.php:170
+#. translators: %s: Directory path where no files were found.
+#: includes/class-media-library.php:180
 #, php-format
 msgid "No files found in the path: %s"
 msgstr ""
 
-#: includes/class-media-library.php:172
+#. translators: %s: S3 bucket name where no files were found.
+#: includes/class-media-library.php:183
 #, php-format
 msgid "No files found in bucket: %s"
 msgstr ""
 
-#: includes/class-media-library.php:177
+#: includes/class-media-library.php:188
 msgid "Possible reasons:"
 msgstr ""
 
-#: includes/class-media-library.php:179
+#: includes/class-media-library.php:190
 msgid "The bucket or path is empty"
 msgstr ""
 
-#: includes/class-media-library.php:180
+#: includes/class-media-library.php:191
 msgid "Your S3 credentials lack proper read permissions"
 msgstr ""
 
-#: includes/class-media-library.php:181
+#: includes/class-media-library.php:192
 msgid "The bucket name or endpoint URL is incorrect"
 msgstr ""
 
-#: includes/class-media-library.php:227
+#. translators: %s: Directory path where files are being uploaded.
+#: includes/class-media-library.php:246
 #, php-format
 msgid "Uploading to directory: %s"
 msgstr ""
 
-#: includes/class-media-library.php:229
+#. translators: %s: S3 bucket name where files are being uploaded.
+#: includes/class-media-library.php:249
 #, php-format
 msgid "Uploading to bucket: %s"
 msgstr ""
 
-#: includes/class-media-library.php:240 includes/class-s3-uploader.php:46
+#: includes/class-media-library.php:260 includes/class-s3-uploader.php:46
 #: includes/class-s3-uploader.php:53 includes/class-s3-uploader.php:74
 #: includes/class-s3-uploader.php:77 includes/class-s3-uploader.php:136
 #: includes/class-s3-uploader.php:147 includes/class-s3-uploader.php:157
-#: includes/class-s3-uploader.php:163 includes/class-s3-uploader.php:174
+#: includes/class-s3-uploader.php:163 includes/class-s3-uploader.php:169
+#: includes/class-s3-uploader.php:180
 msgid "Error"
 msgstr ""
 
-#: includes/class-media-library.php:253
+#: includes/class-media-library.php:273
 msgid "Upload Successful"
 msgstr ""
 
 #. translators: %s: File name.
-#: includes/class-media-library.php:257
+#: includes/class-media-library.php:277
 #, php-format
 msgid "File %s uploaded successfully!"
 msgstr ""
 
-#: includes/class-media-library.php:266
+#: includes/class-media-library.php:286
 msgid "Use this file in your Download"
 msgstr ""
 
 #. translators: %s: Maximum upload file size.
-#: includes/class-media-library.php:284
+#: includes/class-media-library.php:304
 #, php-format
 msgid "Maximum upload file size: %s"
 msgstr ""
 
-#: includes/class-media-library.php:437
+#: includes/class-media-library.php:483
 msgid "File selected successfully!"
 msgstr ""
 
-#: includes/class-media-library.php:438
+#: includes/class-media-library.php:484
 msgid "Error selecting file. Please try again."
 msgstr ""
 
-#: includes/class-media-library.php:444
+#: includes/class-media-library.php:490
 msgid "File size too large. Maximum allowed size is"
 msgstr ""
 
@@ -296,8 +306,12 @@ msgstr ""
 msgid "Please select a file to upload."
 msgstr ""
 
+#: includes/class-s3-uploader.php:169
+msgid "File type not allowed. Only safe file types are permitted."
+msgstr ""
+
 #. translators: %s: Maximum upload file size.
-#: includes/class-s3-uploader.php:173
+#: includes/class-s3-uploader.php:179
 #, php-format
 msgid "File size too large. Maximum allowed size is %s"
 msgstr ""
@@ -313,5 +327,5 @@ msgid ""
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "thisismrez"
+msgid "mohammadr3z"
 msgstr ""

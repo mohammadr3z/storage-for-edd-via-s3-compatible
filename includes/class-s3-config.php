@@ -40,7 +40,7 @@ const URL_PREFIX = 'edd-s3cs://';
     }
     
     public function getExpiryMinutes() {
-        return intval(edd_get_option(self::KEY_EXPIRY_MINUTES, 5));
+        return intval(edd_get_option(self::KEY_EXPIRY_MINUTES, 3));
     }
     
     public function isConfigured() {
@@ -57,11 +57,17 @@ const URL_PREFIX = 'edd-s3cs://';
     }
     
     public function debug($log) {
-        if (defined('WP_DEBUG') && WP_DEBUG) {
+        if (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_LOG') && WP_DEBUG_LOG) {
             if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
+                // Use WordPress logging with proper sanitization
+                $message = wp_json_encode($log, JSON_UNESCAPED_UNICODE);
+                if ($message !== false) {
+                    // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                    error_log('[S3CS_EDD] ' . $message);
+                }
             } else {
-                error_log($log);
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                error_log('[S3CS_EDD] ' . sanitize_text_field($log));
             }
         }
     }

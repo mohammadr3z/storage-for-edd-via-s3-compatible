@@ -29,7 +29,6 @@ class S3CS_EDDS3CompatibleStorage {
     
     public function s3csInit() {
         // Text domain is loaded in main plugin file
-        // This method can be used for other initialization tasks
     }
     
     /**

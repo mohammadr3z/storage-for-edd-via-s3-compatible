@@ -100,7 +100,7 @@ class S3CS_EDD_S3_Client {
                     $errorMsg .= $error->message . ' ';
                 }
                 $this->config->debug($errorMsg);
-                $this->config->debug('Response content: ' . substr($responseBody, 0, 200) . '...');
+                $this->config->debug('Response status: ' . $response->getStatusCode() . ' - XML parsing failed');
                 
                 // Attempt to parse JSON (some services return JSON)
                 $json = json_decode($responseBody, true);
@@ -231,7 +231,7 @@ class S3CS_EDD_S3_Client {
                     $errorMsg .= $error->message . ' ';
                 }
                 $this->config->debug($errorMsg);
-                $this->config->debug('Response content: ' . substr($responseContent, 0, 200) . '...');
+                $this->config->debug('Response status: ' . $response->getStatusCode() . ' - XML parsing failed');
                 return [];
             }
             libxml_use_internal_errors(false);
@@ -269,13 +269,7 @@ class S3CS_EDD_S3_Client {
             $this->config->debug('Simple Auth failed: ' . $e->getMessage());
         }
         
-        // Method 3: No Auth (For testing)
-        try {
-            return $this->makeRequestWithoutAuth($client, $endpoint, $method, $uri, $queryString);
-        } catch (Exception $e) {
-            $this->config->debug('No Auth failed: ' . $e->getMessage());
-        }
-        
+        // No fallback to unauthenticated requests for security
         return false;
     }
     
@@ -339,12 +333,5 @@ class S3CS_EDD_S3_Client {
         ]);
     }
     
-    private function makeRequestWithoutAuth($client, $endpoint, $method, $uri, $queryString) {
-        $requestUrl = rtrim($endpoint, '/') . $uri;
-        if (!empty($queryString)) {
-            $requestUrl .= '?' . $queryString;
-        }
-        
-        return $client->request($method, $requestUrl);
-    }
+
 }

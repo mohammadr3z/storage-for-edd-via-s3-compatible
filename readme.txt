@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -105,6 +105,16 @@ Yes, the plugin includes an S3 Library feature that allows you to browse and sel
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.0.9 =
+* Security: Added capability-based access control for S3 media library and upload functionality
+* Security: Removed debug console.log statements to prevent file path exposure
+* Security: Removed admin_post_nopriv_s3cs_upload action hook to restrict upload access to logged-in users only
+* Security: Removed SVG from allowed file extensions to prevent XSS attacks via malicious SVG files
+* Security: Replaced raw S3 error message display with generic user-friendly messages while logging detailed errors for debugging
+* Security: Reduced XML parser logging to prevent sensitive server response data exposure in logs
+* Security: Removed "No Auth" fallback from authentication methods to prevent unauthenticated requests
+* Security: Deleted unused `makeRequestWithoutAuth` method to enhance security posture
 
 = 1.0.8 =
 * Added: File type validation with enhanced security against dangerous file uploads

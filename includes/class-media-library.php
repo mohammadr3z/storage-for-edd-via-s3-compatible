@@ -30,6 +30,12 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
     }
     
     public function registerS3LibTab() {
+        // Check user capability for accessing S3 media library
+        $mediaCapability = apply_filters('s3cs_edd_media_access_cap', 'edit_products');
+        if (!current_user_can($mediaCapability)) {
+            wp_die(esc_html__('You do not have permission to access S3 media library.', 'storage-for-edd-via-s3-compatible'));
+        }
+        
         // Check nonce for GET requests with parameters
         if (!empty($_GET) && (isset($_GET['path']) || isset($_GET['_wpnonce']))) {
             if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'media-form')) {
@@ -87,7 +93,9 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
             $connection_error = false;
         } catch (Exception $e) {
             $files = false;
-            $connection_error = $e->getMessage();
+            $connection_error = true;
+            // Log detailed error for debugging
+            $this->config->debug('S3 connection error: ' . $e->getMessage());
         }
         
         ?>
@@ -100,10 +108,7 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                 <div class="s3cs-notice warning">
                     <h4><?php esc_html_e('Connection Error', 'storage-for-edd-via-s3-compatible'); ?></h4>
                     <p><?php esc_html_e('Unable to connect to your S3 storage.', 'storage-for-edd-via-s3-compatible'); ?></p>
-                    <p>
-                        <strong><?php esc_html_e('Error details:', 'storage-for-edd-via-s3-compatible'); ?></strong><br>
-                        <?php echo esc_html($connection_error); ?>
-                    </p>
+                    <p><?php esc_html_e('Please check your S3 configuration settings and try again.', 'storage-for-edd-via-s3-compatible'); ?></p>
                     <p>
                         <a href="<?php echo esc_url(admin_url('edit.php?post_type=download&page=edd-settings&tab=extensions&section=s3cs-settings')); ?>" class="button-primary">
                             <?php esc_html_e('Check S3 Settings', 'storage-for-edd-via-s3-compatible'); ?>
@@ -205,6 +210,12 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
     }
     
     public function registerS3UploadTab() {
+        // Check user capability for uploading to S3
+        $uploadCapability = apply_filters('s3cs_edd_upload_cap', 'edit_products');
+        if (!current_user_can($uploadCapability)) {
+            wp_die(esc_html__('You do not have permission to upload files to S3.', 'storage-for-edd-via-s3-compatible'));
+        }
+        
         // Check nonce for GET requests with parameters
         if (!empty($_GET) && (isset($_GET['path']) || isset($_GET['_wpnonce']))) {
             if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'media-form')) {
@@ -255,10 +266,12 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
             $errorMsg = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             if ($errorMsg) {
+                // Log detailed error for debugging
+                $this->config->debug('Upload error: ' . $errorMsg);
                 ?>
                 <div class="edd_errors s3cs-notice warning">
                     <h4><?php esc_html_e('Error', 'storage-for-edd-via-s3-compatible'); ?></h4>
-                    <p class="edd_error"><?php echo esc_html($errorMsg); ?></p>
+                    <p class="edd_error"><?php esc_html_e('An error occurred during the upload process. Please try again.', 'storage-for-edd-via-s3-compatible'); ?></p>
                 </div>
                 <?php
             }
@@ -409,7 +422,7 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                     $errorMsg .= $error->message . ' ';
                 }
                 $this->config->debug($errorMsg);
-                $this->config->debug('Response content: ' . substr($responseContent, 0, 200) . '...');
+                $this->config->debug('Response status: ' . $response->getStatusCode() . ' - XML parsing failed');
                 libxml_use_internal_errors(false);
                 return $details;
             }

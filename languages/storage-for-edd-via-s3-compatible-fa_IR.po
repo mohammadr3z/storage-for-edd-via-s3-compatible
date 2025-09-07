@@ -285,6 +285,14 @@ msgstr "خطا در انتخاب فایل. لطفاً دوباره تلاش کن
 msgid "File size too large. Maximum allowed size is"
 msgstr "حجم فایل خیلی بزرگ است. حداکثر اندازه مجاز"
 
+#: includes/class-media-library.php:35
+msgid "You do not have permission to access S3 media library."
+msgstr "شما اجازه دسترسی به کتابخانه رسانه S3 را ندارید."
+
+#: includes/class-media-library.php:216
+msgid "You do not have permission to upload files to S3."
+msgstr "شما اجازه آپلود فایل‌ها در S3 را ندارید."
+
 #: includes/class-s3-uploader.php:29
 msgid "You do not have permission to upload files to S3."
 msgstr "شما اجازه آپلود فایل‌ها در S3 را ندارید."

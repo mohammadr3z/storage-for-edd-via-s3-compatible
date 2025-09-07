@@ -13,7 +13,6 @@ class S3CS_EDD_S3_Uploader {
         
         // Register upload handler for admin-post.php
         add_action('admin_post_s3cs_upload', array($this, 'performFileUpload'));
-add_action('admin_post_nopriv_s3cs_upload', array($this, 'performFileUpload'));
     }
     
     /**
@@ -199,7 +198,7 @@ add_action('admin_post_nopriv_s3cs_upload', array($this, 'performFileUpload'));
         $allowedExtensions = array(
             'zip', 'rar', '7z', 'tar', 'gz',
             'pdf', 'doc', 'docx', 'txt', 'rtf',
-            'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg',
+            'jpg', 'jpeg', 'png', 'gif', 'webp',
             'mp3', 'wav', 'ogg', 'flac', 'm4a',
             'mp4', 'avi', 'mov', 'wmv', 'flv', 'webm',
             'epub', 'mobi', 'azw', 'azw3',

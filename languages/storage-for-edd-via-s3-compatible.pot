@@ -278,6 +278,14 @@ msgstr ""
 msgid "File size too large. Maximum allowed size is"
 msgstr ""
 
+#: includes/class-media-library.php:35
+msgid "You do not have permission to access S3 media library."
+msgstr ""
+
+#: includes/class-media-library.php:216
+msgid "You do not have permission to upload files to S3."
+msgstr ""
+
 #: includes/class-s3-uploader.php:29
 msgid "You do not have permission to upload files to S3."
 msgstr ""

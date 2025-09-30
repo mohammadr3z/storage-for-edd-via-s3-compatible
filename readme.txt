@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -22,6 +22,7 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
 * **Easy File Management**: Upload files directly to S3 storage through WordPress admin
 * **Media Library Integration**: Browse and select files from your S3 storage within WordPress
 * **Configurable Expiry**: Set custom expiration times for download links
+* **Customizable URL Prefix**: Developers can customize the URL prefix (default: edd-s3cs://) using WordPress hooks
 * **Security First**: Built with WordPress security best practices
 * **Developer Friendly**: Clean, well-documented code with hooks and filters
 
@@ -98,6 +99,17 @@ Dangerous file types (executables, scripts) are automatically blocked for securi
 
 Yes, the plugin includes an S3 Library feature that allows you to browse and select existing files from your S3 bucket directly within the WordPress admin interface.
 
+= Can I customize the URL prefix for S3 files? =
+
+Yes, developers can customize the URL prefix using the `s3cs_edd_url_prefix` filter. Add this code to your theme's functions.php:
+
+`
+function customize_s3_url_prefix($prefix) {
+    return 'edd-customprefix://'; // Change to your preferred prefix
+}
+add_filter('s3cs_edd_url_prefix', 'customize_s3_url_prefix');
+`
+
 == Screenshots ==
 
 1. Admin panel user interface
@@ -105,6 +117,12 @@ Yes, the plugin includes an S3 Library feature that allows you to browse and sel
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.1.0 =
+* Added: URL prefix customization hook (`s3cs_edd_url_prefix` filter) for improved developer flexibility.
+* Added: Search functionality for S3 Library with real-time file filtering.
+* Added: Clear search button and keyboard shortcuts (Ctrl+F/Cmd+F) for enhanced user experience.
+* Improved: S3 Library interface with modern search container styling.
 
 = 1.0.9 =
 * Security: Added capability-based access control for S3 media library and upload functionality

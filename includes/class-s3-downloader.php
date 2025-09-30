@@ -23,11 +23,12 @@ class S3CS_EDD_S3_Downloader {
         $fileData = $downloadFiles[$fileKey];
         $filename = $fileData['file'];
         
-        if (strpos($filename, S3CS_EDD_S3_Config::URL_PREFIX) !== 0) {
+        $urlPrefix = $this->config->getUrlPrefix();
+        if (strpos($filename, $urlPrefix) !== 0) {
             return $file;
         }
         
-        $path = substr($filename, strlen(S3CS_EDD_S3_Config::URL_PREFIX));
+        $path = substr($filename, strlen($urlPrefix));
         $client = $this->client->getClient();
         
         if (!$client) {

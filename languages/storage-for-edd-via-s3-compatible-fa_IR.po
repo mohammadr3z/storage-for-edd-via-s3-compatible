@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Storage for EDD via S3-Compatible\n"
 "POT-Creation-Date: 2025-07-29 01:08+0330\n"
-"PO-Revision-Date: 2025-07-29 01:08+0330\n"
+"PO-Revision-Date: 2025-09-27 12:10+0330\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fa_IR\n"
@@ -15,9 +15,7 @@ msgstr ""
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: storage-for-edd-via-s3-compatible.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
@@ -62,12 +60,8 @@ msgid "Endpoint URL"
 msgstr "آدرس اینترنتی"
 
 #: includes/class-admin-settings.php:68
-msgid ""
-"Enter your S3 compatible endpoint URL (e.g. https://s3.example.com). The URL "
-"should start with https:// for proper functionality."
-msgstr ""
-"آدرس Endpoint سازگار با S3 خود را وارد کنید (مثلا https://s3.example.com). "
-"آدرس اینترنتی (URL) باید با https:// شروع شود تا عملکرد صحیح داشته باشد."
+msgid "Enter your S3 compatible endpoint URL (e.g. https://s3.example.com). The URL should start with https:// for proper functionality."
+msgstr "آدرس Endpoint سازگار با S3 خود را وارد کنید (مثلا https://s3.example.com). آدرس اینترنتی (URL) باید با https:// شروع شود تا عملکرد صحیح داشته باشد."
 
 #: includes/class-admin-settings.php:76
 msgid "Bucket Name"
@@ -129,19 +123,12 @@ msgid "No S3 bucket selected"
 msgstr "باکت S3 انتخاب نشده است"
 
 #: includes/class-media-library.php:71
-msgid ""
-"Please configure your S3 settings and select a bucket before browsing files."
-msgstr ""
-"لطفا تنظیمات S3 خود را پیکربندی کرده و قبل از مرور فایل‌ها، یک باکت انتخاب "
-"کنید."
+msgid "Please configure your S3 settings and select a bucket before browsing files."
+msgstr "لطفا تنظیمات S3 خود را پیکربندی کرده و قبل از مرور فایل‌ها، یک باکت انتخاب کنید."
 
 #: includes/class-media-library.php:72
-msgid ""
-"You need to configure Access Key, Secret Key, Endpoint, and select a bucket "
-"to browse S3 files."
-msgstr ""
-"برای مرور فایل‌های S3 باید کلید دسترسی، کلید مخفی، نقطه پایانی را پیکربندی "
-"کرده و یک باکت انتخاب کنید."
+msgid "You need to configure Access Key, Secret Key, Endpoint, and select a bucket to browse S3 files."
+msgstr "برای مرور فایل‌های S3 باید کلید دسترسی، کلید مخفی، نقطه پایانی را پیکربندی کرده و یک باکت انتخاب کنید."
 
 #: includes/class-media-library.php:97
 msgid "Select a file from S3"
@@ -289,11 +276,7 @@ msgstr "حجم فایل خیلی بزرگ است. حداکثر اندازه مج
 msgid "You do not have permission to access S3 media library."
 msgstr "شما اجازه دسترسی به کتابخانه رسانه S3 را ندارید."
 
-#: includes/class-media-library.php:216
-msgid "You do not have permission to upload files to S3."
-msgstr "شما اجازه آپلود فایل‌ها در S3 را ندارید."
-
-#: includes/class-s3-uploader.php:29
+#: includes/class-media-library.php:216 includes/class-s3-uploader.php:29
 msgid "You do not have permission to upload files to S3."
 msgstr "شما اجازه آپلود فایل‌ها در S3 را ندارید."
 
@@ -336,13 +319,17 @@ msgid "Storage for EDD via S3-Compatible"
 msgstr "فضای ذخیره‌سازی سازگار با S3 برای EDD"
 
 #. Description of the plugin/theme
-msgid ""
-"Enable secure cloud storage and delivery of your digital products through S3-"
-"compatible services for Easy Digital Downloads."
-msgstr ""
-"فعال‌سازی ذخیره‌سازی ابری امن و تحویل محصولات دیجیتال شما از طریق سرویس‌های "
-"سازگار با S3 برای Easy Digital Downloads."
+msgid "Enable secure cloud storage and delivery of your digital products through S3-compatible services for Easy Digital Downloads."
+msgstr "فعال‌سازی ذخیره‌سازی ابری امن و تحویل محصولات دیجیتال شما از طریق سرویس‌های سازگار با S3 برای Easy Digital Downloads."
 
 #. Author of the plugin/theme
 msgid "mohammadr3z"
 msgstr "mohammadr3z"
+
+#: includes/class-media-library.php:136
+msgid "Search files..."
+msgstr "جستجوی فایل‌ها..."
+
+#: includes/class-media-library.php:142
+msgid "Clear"
+msgstr "پاک کردن"

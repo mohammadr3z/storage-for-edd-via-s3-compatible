@@ -12,6 +12,22 @@ const KEY_REGION = 's3cs_edd_region';
 const KEY_EXPIRY_MINUTES = 's3cs_edd_expiry_minutes';
 const URL_PREFIX = 'edd-s3cs://';
     
+    /**
+     * Get the URL prefix for S3 file URLs
+     * This method allows developers to customize the URL prefix using the 's3cs_edd_url_prefix' filter
+     * 
+     * @return string The URL prefix (default: 'edd-s3cs://')
+     */
+    public function getUrlPrefix() {
+        /**
+         * Filter the URL prefix for S3 file URLs
+         * 
+         * @param string $prefix The default URL prefix
+         * @return string The filtered URL prefix
+         */
+        return apply_filters('s3cs_edd_url_prefix', self::URL_PREFIX);
+    }
+    
     public function getAccessKey() {
         return edd_get_option(self::KEY_ACCESS_KEY);
     }

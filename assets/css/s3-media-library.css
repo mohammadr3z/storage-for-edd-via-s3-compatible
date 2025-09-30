@@ -63,6 +63,79 @@ body#media-upload {
     transition: all 0.2s ease;
 }
 
+/* Search Functionality Styles */
+.s3cs-search-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.s3cs-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 500px;
+}
+
+#s3cs-file-search {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+    height: 36px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#s3cs-file-search:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+#s3cs-clear-search {
+    padding: 6px 12px;
+    background: #f6f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #50575e;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1.4;
+    height: 36px;
+    min-width: 60px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+#s3cs-clear-search:hover {
+    background: #e9ecef;
+    border-color: #c3c4c7;
+    color: #1d2327;
+}
+
+.s3cs-search-label {
+    font-weight: 500;
+    color: #1d2327;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.s3cs-no-search-results {
+    background: #f8f9fa;
+    border: 1px solid #e2e4e7;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    color: #50575e;
+    font-style: italic;
+    margin: 20px 0;
+}
+
 /* Responsive Design */
 @media screen and (max-width: 782px) {
     body#media-upload {
@@ -135,6 +208,35 @@ body#media-upload {
         background: #135e96;
         border-color: #135e96;
         color: #fff;
+    }
+    
+    /* Search responsive styles */
+    .s3cs-search-container {
+        margin: 15px 0;
+        padding: 12px;
+    }
+    
+    .s3cs-search-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: none;
+        gap: 10px;
+    }
+    
+    #s3cs-file-search {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        height: 44px;
+    }
+    
+    #s3cs-clear-search {
+        width: 100%;
+        padding: 10px 12px;
+        text-align: center;
+        font-size: 14px;
+        height: 44px;
+        min-width: auto;
     }
 
 }

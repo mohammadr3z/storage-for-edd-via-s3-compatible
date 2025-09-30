@@ -128,6 +128,21 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                     ?>
                 </p>
                 
+                <!-- Search Input -->
+                <div class="s3cs-search-container" style="margin-bottom: 15px;">
+                    <input type="text" 
+                           id="s3cs-file-search" 
+                           class="s3cs-search-input" 
+                           placeholder="<?php esc_attr_e('Search files...', 'storage-for-edd-via-s3-compatible'); ?>" 
+                           style="width: 300px; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;">
+                    <button type="button" 
+                            id="s3cs-clear-search" 
+                            class="button" 
+                            style="margin-left: 10px;">
+                        <?php esc_html_e('Clear', 'storage-for-edd-via-s3-compatible'); ?>
+                    </button>
+                </div>
+                
                 <!-- File Display Table -->
                 <table class="wp-list-table widefat fixed s3cs-files-table">
                     <thead>
@@ -497,18 +512,18 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
             'file_selected_error' => esc_html__('Error selecting file. Please try again.', 'storage-for-edd-via-s3-compatible')
         ));
         
-        wp_add_inline_script('s3cs-media-library', 'var s3cs_edd_url_prefix = "' . esc_js(S3CS_EDD_S3_Config::URL_PREFIX) . '";', 'before');
+        wp_add_inline_script('s3cs-media-library', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
         
         wp_localize_script('s3cs-upload', 's3cs_edd_i18n', array(
             'file_size_too_large' => esc_html__('File size too large. Maximum allowed size is', 'storage-for-edd-via-s3-compatible')
         ));
         
         // Add URL prefix as inline script
-        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_url_prefix = "' . esc_js(S3CS_EDD_S3_Config::URL_PREFIX) . '";', 'before');
+        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
         // Add max upload size as inline script
         wp_add_inline_script('s3cs-upload', 'var s3cs_edd_max_upload_size = ' . wp_max_upload_size() . ';', 'before');
         
         // Add URL prefix as inline script
-        wp_add_inline_script('s3cs-admin-upload-buttons', 'var s3cs_edd_url_prefix = "' . esc_js(S3CS_EDD_S3_Config::URL_PREFIX) . '";', 'before');
+        wp_add_inline_script('s3cs-admin-upload-buttons', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
     }
 }

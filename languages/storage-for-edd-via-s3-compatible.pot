@@ -337,3 +337,11 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "mohammadr3z"
 msgstr ""
+
+#: includes/class-media-library.php:136
+msgid "Search files..."
+msgstr ""
+
+#: includes/class-media-library.php:142
+msgid "Clear"
+msgstr ""

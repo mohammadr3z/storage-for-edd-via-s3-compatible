@@ -170,7 +170,12 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                             ?>
                             <tr>
                                 <td class="column-primary" data-label="<?php esc_attr_e('File Name', 'storage-for-edd-via-s3-compatible'); ?>">
-                                    <span class="file-name"><?php echo esc_html($display_name); ?></span>
+                                    <div class="s3cs-file-display">
+                                        <span class="file-name"><?php echo esc_html($filename); ?></span>
+                                        <?php if (!empty($folder_path)) { ?>
+                                            <span class="file-path"><?php echo esc_html($folder_path); ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </td>
                                 <td data-label="<?php esc_attr_e('File Size', 'storage-for-edd-via-s3-compatible'); ?>">
                                     <span class="file-size"><?php echo esc_html($file_size); ?></span>
@@ -197,7 +202,7 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                         <?php 
                         if (!empty($path)) {
                             // translators: %s: Directory path where no files were found.
-                            printf(esc_html__('No files found in the path: %s', 'storage-for-edd-via-s3-compatible'), '<code class="s3cs-path">' . esc_html($path) . '</code>');
+                            printf(esc_html__('No files found in the path: %s', 'storage-for-edd-via-s3-compatible'), '<span class="s3cs-path">' . esc_html($path) . '</span>');
                         } else {
                             // translators: %s: S3 bucket name where no files were found.
                             printf(esc_html__('No files found in bucket: %s', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($this->config->getBucket()) . '</strong>');
@@ -302,9 +307,17 @@ $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-com
                     <p class="edd_success">
                         <?php
                         // translators: %s: File name.
-                        printf(esc_html__('File %s uploaded successfully!', 'storage-for-edd-via-s3-compatible'), esc_html($savedPathAndFilename));
+                        printf(esc_html__('File %s uploaded successfully!', 'storage-for-edd-via-s3-compatible'), '<strong>' . esc_html($savedFilename) . '</strong>');
                         ?>
                     </p>
+                    <?php if ($lastSlashPos !== false) { ?>
+                        <p class="s3cs-upload-path">
+                            <?php
+                            // translators: %s: File path.
+                            printf(esc_html__('Path: %s', 'storage-for-edd-via-s3-compatible'), '<span class="s3cs-path">' . esc_html(substr($savedPathAndFilename, 0, $lastSlashPos + 1)) . '</span>');
+                            ?>
+                        </p>
+                    <?php } ?>
                     <p>
                         <a href="javascript:void(0)" 
                            id="s3cs_edd_save_link" 

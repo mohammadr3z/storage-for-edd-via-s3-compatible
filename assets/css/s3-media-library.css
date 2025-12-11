@@ -11,7 +11,7 @@ body#media-upload {
     margin: 20px 0;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     overflow: hidden;
 }
 
@@ -47,6 +47,35 @@ body#media-upload {
     gap: 8px;
 }
 
+/* File Display Container */
+.s3cs-file-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.s3cs-file-display .file-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.5;
+    display: block;
+    letter-spacing: 0.01em;
+}
+
+.s3cs-file-display .file-path {
+    font-size: 11px;
+    font-weight: 400;
+    font-style: normal;
+    padding: 3px 0;
+    background: transparent;
+    border-radius: 0;
+    display: block;
+    max-width: 100%;
+    word-break: break-all;
+    opacity: 0.85;
+}
+
+
 .s3cs-files-table .file-size,
 .s3cs-files-table .file-date,
 .s3cs-files-table .file-owner {
@@ -70,7 +99,7 @@ body#media-upload {
     border-radius: 8px;
     padding: 16px;
     margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .s3cs-search-wrapper {
@@ -175,20 +204,39 @@ body#media-upload {
         margin-bottom: 4px;
         color: #1d2327;
     }
-    
+
     /* Override WordPress default hiding behavior for file name and select button */
-    .wp-list-table th.column-primary~th, 
+    .wp-list-table th.column-primary~th,
     .wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td:not(.check-column) {
         display: block !important;
-		padding:0px!important
+        padding: 0px !important
     }
-    
+
     /* Make sure file name is always visible */
     .s3cs-files-table .file-name {
         font-size: 1rem;
         padding-bottom: 10px;
     }
-    
+
+    /* Responsive file display */
+    .s3cs-file-display {
+        gap: 8px;
+    }
+
+    .s3cs-file-display .file-name {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+
+    .s3cs-file-display .file-path {
+        font-size: 12px;
+        padding: 4px 0;
+        max-width: 100%;
+        word-break: break-word;
+        opacity: 0.8;
+    }
+
     /* Style the select button to be more prominent on mobile */
     .s3cs-files-table .button-small {
         text-align: center;
@@ -202,34 +250,35 @@ body#media-upload {
         color: #fff;
         border-color: #2271b1;
     }
-    
+
     .s3cs-files-table .button-small:hover,
     .s3cs-files-table .button-small:focus {
         background: #135e96;
         border-color: #135e96;
         color: #fff;
     }
-    
+
     /* Search responsive styles */
     .s3cs-search-container {
         margin: 15px 0;
         padding: 12px;
     }
-    
+
     .s3cs-search-wrapper {
         flex-direction: column;
         align-items: stretch;
         max-width: none;
         gap: 10px;
     }
-    
+
     #s3cs-file-search {
         width: 100%;
         padding: 10px 12px;
-        font-size: 16px; /* Prevents zoom on iOS */
+        font-size: 16px;
+        /* Prevents zoom on iOS */
         height: 44px;
     }
-    
+
     #s3cs-clear-search {
         width: 100%;
         padding: 10px 12px;

@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,12 +18,12 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
 = Key Features =
 
 * **S3 Compatible Storage Support**: Works with MinIO, DigitalOcean Spaces, Linode Object Storage, and other S3-compatible services
-* **Secure File Delivery**: Generates time-limited, secure download URLs for your digital products
+* **Secure File Delivery**: Generates time-limited, secure download URLs with enforced timeout limits (1-60 minutes) for your digital products
 * **Easy File Management**: Upload files directly to S3 storage through WordPress admin
 * **Media Library Integration**: Browse and select files from your S3 storage within WordPress
-* **Configurable Expiry**: Set custom expiration times for download links
+* **Configurable Expiry**: Set custom expiration times for download links with automatic validation
 * **Customizable URL Prefix**: Developers can customize the URL prefix (default: edd-s3cs://) using WordPress hooks
-* **Security First**: Built with WordPress security best practices
+* **Security First**: Built with WordPress security best practices including timeout enforcement and input validation
 * **Developer Friendly**: Clean, well-documented code with hooks and filters
 
 == Installation ==
@@ -42,7 +42,7 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
    * Secret Key
    * Endpoint URL (e.g., https://s3.example.com)
    * Bucket Name
-3. Set the download link expiry time (in minutes)
+3. Set the download link expiry time (in minutes, between 1-60 minutes)
 4. Save the settings
 
 == Usage ==
@@ -82,18 +82,40 @@ This plugin works with any S3-compatible storage service including:
 
 The plugin generates presigned URLs with configurable expiration times (default 3 minutes). These URLs are temporary and cannot be shared or reused after expiration, ensuring your digital products remain secure.
 
+For enhanced security, the plugin enforces timeout limits:
+* Minimum expiry time: 1 minute (ensures links work for legitimate downloads)
+* Maximum expiry time: 60 minutes (prevents long-term unauthorized access)
+* Even if you try to set values outside this range, the plugin automatically adjusts them to stay within safe limits
+
+This prevents abuse scenarios such as:
+* Links that expire too quickly (0 minutes)
+* Links that remain valid for days or weeks
+* Unauthorized long-term access to your digital products
+
 = What file types are supported for upload? =
 
 The plugin supports safe file types including:
 * Archives: ZIP, RAR, 7Z, TAR, GZ
 * Documents: PDF, DOC, DOCX, TXT, RTF, XLS, XLSX, CSV, PPT, PPTX
-* Images: JPG, JPEG, PNG, GIF, WEBP, SVG
+* Images: JPG, JPEG, PNG, GIF, WEBP
 * Audio: MP3, WAV, OGG, FLAC, M4A
 * Video: MP4, AVI, MOV, WMV, FLV, WEBM
 * E-books: EPUB, MOBI, AZW, AZW3
 * Web files: CSS, JS, JSON, XML
 
 Dangerous file types (executables, scripts) are automatically blocked for security.
+
+= How does the plugin validate uploaded files? =
+
+The plugin implements multiple layers of security validation:
+
+* **Extension Validation**: Checks file extensions against a whitelist of allowed types
+* **MIME Type Validation**: Validates the actual file content type (not just the extension) to prevent file type spoofing
+* **Content-Type Matching**: Ensures the file extension matches the actual MIME type to detect malicious files with fake extensions
+* **Size Validation**: Enforces WordPress upload size limits
+* **Nonce Verification**: Protects against CSRF attacks
+
+This multi-layered approach prevents attackers from uploading malicious files disguised with safe extensions (e.g., a PHP file renamed to .jpg).
 
 = Can I browse existing files in my S3 storage? =
 
@@ -110,6 +132,24 @@ function customize_s3_url_prefix($prefix) {
 add_filter('s3cs_edd_url_prefix', 'customize_s3_url_prefix');
 `
 
+= Can I customize the allowed file types (MIME types)? =
+
+Yes, developers can customize the allowed MIME types using the `s3cs_edd_allowed_mime_types` filter. Add this code to your theme's functions.php:
+
+`
+function customize_allowed_mime_types($mime_types) {
+    // Add custom MIME types
+    $mime_types[] = 'application/x-rar'; // Add RAR support
+    $mime_types[] = 'video/x-matroska'; // Add MKV video support
+    
+    // Or remove specific MIME types
+    $mime_types = array_diff($mime_types, array('video/x-flv')); // Remove FLV
+    
+    return $mime_types;
+}
+add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
+`
+
 == Screenshots ==
 
 1. Admin panel user interface
@@ -117,6 +157,17 @@ add_filter('s3cs_edd_url_prefix', 'customize_s3_url_prefix');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.1.1 =
+* Improved: File display in S3 Library now shows filename prominently with path as a subtle subtitle for better readability.
+* Improved: Enhanced visual hierarchy in file listings with larger, bolder filenames and cleaner path display.
+* Improved: Better responsive design for file display on mobile and tablet devices.
+* Improved: Simplified file path styling with better contrast and spacing for improved user experience.
+* Security: Enforced timeout limits for presigned URLs (minimum 1 minute, maximum 60 minutes) to prevent abuse and ensure reasonable download link expiration.
+* Security: Enhanced endpoint URL validation with SSRF protection, blocking private IP addresses, localhost, and internal networks to prevent server-side request forgery attacks.
+* Security: Added comprehensive Content-Type (MIME type) validation to prevent file type spoofing attacks where malicious files are disguised with safe extensions.
+* Security: Implemented multi-layered file validation including extension matching, MIME type verification, and content-type header validation for S3 uploads.
+* Security: Added filter hook (s3cs_edd_allowed_mime_types) to allow developers to customize allowed MIME types while maintaining security.
 
 = 1.1.0 =
 * Added: URL prefix customization hook (`s3cs_edd_url_prefix` filter) for improved developer flexibility.

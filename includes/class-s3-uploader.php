@@ -35,7 +35,7 @@ class S3CS_EDD_S3_Uploader
             return;
         }
 
-        $path = filter_input(INPUT_POST, 's3cs_edd_path', FILTER_SANITIZE_URL);
+        $path = filter_input(INPUT_POST, 's3cs_edd_path', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ($path && substr($path, -1) !== '/') {
             $path .= '/';
         }
@@ -87,9 +87,14 @@ class S3CS_EDD_S3_Uploader
             $filetype = wp_check_filetype_and_ext($_FILES['s3cs_edd_file']['tmp_name'], $_FILES['s3cs_edd_file']['name']);
             $contentType = !empty($filetype['type']) ? $filetype['type'] : 'application/octet-stream';
 
+            // Encode filename parts for Canonical URI to match AWS requirements and Guzzle's behavior
+            $explodedFilename = explode('/', $filename);
+            $encodedFilenameParts = array_map('rawurlencode', $explodedFilename);
+            $encodedFilename = implode('/', $encodedFilenameParts);
+
             // Create canonical request
             $method = 'PUT';
-            $canonicalUri = "/$bucket/$filename";
+            $canonicalUri = "/$bucket/$encodedFilename";
             $canonicalQueryString = '';
             $canonicalHeaders = "content-length:" . strlen($fileContent) . "\ncontent-type:$contentType\nhost:" . wp_parse_url($endpoint, PHP_URL_HOST) . "\nx-amz-content-sha256:$contentHash\nx-amz-date:$date\n";
             $signedHeaders = 'content-length;content-type;host;x-amz-content-sha256;x-amz-date';
@@ -113,7 +118,8 @@ class S3CS_EDD_S3_Uploader
             $authorization = "$algorithm Credential=$accessKey/$credentialScope, SignedHeaders=$signedHeaders, Signature=$signature";
 
             // Upload file
-            $response = $client->request('PUT', "/$bucket/$filename", [
+            // Use encoded filename to prevent double encoding or mismatches
+            $response = $client->request('PUT', "/$bucket/$encodedFilename", [
                 'headers' => [
                     'Content-Type' => $contentType,
                     'Content-Length' => strlen($fileContent),

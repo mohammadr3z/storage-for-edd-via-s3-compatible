@@ -57,6 +57,34 @@
     background: #f7fef7;
 }
 
+/* RTL Support for Upload Notices */
+html[dir="rtl"] .edd_errors,
+body.rtl .edd_errors {
+    border-left: none;
+    border-right: 4px solid var(--s3cs-error);
+}
+
+html[dir="rtl"] .s3cs-notice,
+body.rtl .s3cs-notice {
+    border-left: none;
+    border-right: 4px solid var(--s3cs-primary);
+}
+
+html[dir="rtl"] .s3cs-notice.warning,
+body.rtl .s3cs-notice.warning {
+    border-right-color: var(--s3cs-warning);
+}
+
+html[dir="rtl"] .s3cs-notice.error,
+body.rtl .s3cs-notice.error {
+    border-right-color: var(--s3cs-error);
+}
+
+html[dir="rtl"] .s3cs-notice.success,
+body.rtl .s3cs-notice.success {
+    border-right-color: var(--s3cs-success);
+}
+
 .s3cs-notice h4 {
     margin: 0 0 0.75rem;
     font-size: 1rem;
@@ -134,10 +162,11 @@ body#media-upload {
 
 .s3cs-upload-form {
     background: #fff;
-    border-radius: 0.5rem;
-    box-shadow: var(--s3cs-card-shadow);
-    padding: 1.5rem;
-    margin-top: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     width: 100%;
     box-sizing: border-box;
 }

@@ -3,8 +3,8 @@ author: mohammadr3z
 Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
-Tested up to: 6.8
-Stable tag: 1.1.1
+Tested up to: 6.9
+Stable tag: 1.1.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -127,7 +127,7 @@ Yes, developers can customize the URL prefix using the `s3cs_edd_url_prefix` fil
 
 `
 function customize_s3_url_prefix($prefix) {
-    return 'edd-customprefix://'; // Change to your preferred prefix
+    return 'edd-myprefix://'; // Change to your preferred prefix
 }
 add_filter('s3cs_edd_url_prefix', 'customize_s3_url_prefix');
 `
@@ -156,7 +156,31 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 2. File selection from S3 storage section
 3. File upload to S3 storage interface
 
-== Changelog ==
+= 1.1.5 =
+* Improved: Media library table styling for more consistent file and folder display.
+* Improved: Redesigned folder rows with better icons and refined hover effects.
+* Improved: Enhanced mobile responsiveness for the file browser table.
+* Fixed: Corrected file name and path display order in the media library.
+
+= 1.1.4 =
+* Added: Breadcrumb navigation in file browser - click any folder in the path to navigate directly.
+* Improved: Integrated search functionality directly into the breadcrumb navigation bar for a cleaner UI.
+* Improved: Better navigation experience without needing the Back button.
+* Improved: Enhanced styling for search inputs and buttons, including compact padding.
+* Fixed: RTL layout issues for breadcrumbs and navigation buttons.
+* Cleaned: Removed legacy CSS and unused search container elements.
+
+= 1.1.3 =
+* Changed: Merged Upload tab into Library tab for a unified experience.
+* Improved: Upload form toggles with a button in the header row.
+* Improved: Back button moved to header row with new styling (orange for Upload, blue for Back).
+* Improved: Success notice no longer persists after navigating back in the media library.
+* Fixed: Critical issue with S3 uploads to folders with spaces in their names (AWS Signature V4 mismatch).
+* Improved: Better RTL support for styling and layout.
+
+= 1.1.2 =
+* Fixed: Removed non-prefixed global variable to comply with WordPress coding standards.
+* Improved: Optimized admin settings to only fetch bucket list when viewing the S3 settings section, preventing unnecessary API calls on other EDD settings pages.
 
 = 1.1.1 =
 * Improved: File display in S3 Library now shows filename prominently with path as a subtle subtitle for better readability.
@@ -240,6 +264,14 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 For support and bug reports, please use the WordPress.org plugin support forum.
 
 If you find this plugin helpful, please consider leaving a review on WordPress.org.
+
+== Other Storage Providers ==
+
+Looking for a different storage provider? Check out our other plugins:
+
+* [Storage for EDD via Box](https://wordpress.org/plugins/storage-for-edd-via-box/) - Use Box for your digital product storage
+* [Storage for EDD via Dropbox](https://wordpress.org/plugins/storage-for-edd-via-dropbox/) - Use Dropbox for your digital product storage
+* [Storage for EDD via OneDrive](https://wordpress.org/plugins/storage-for-edd-via-onedrive/) - Use Microsoft OneDrive for your digital product storage
 
 == Privacy Policy ==
 

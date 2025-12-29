@@ -23,10 +23,18 @@ class S3CS_EDD_S3_Admin_Settings
         // Check if basic credentials are configured
         $is_configured_for_buckets = $this->config->isConfiguredForBucketList();
 
+        // Check if we are on the EDD extensions settings page
+        // This prevents API calls on every admin page load
+        // Load buckets if: tab=extensions AND (no section OR section is ours)
+        $is_settings_page = is_admin() &&
+            isset($_GET['page']) && $_GET['page'] === 'edd-settings' &&
+            isset($_GET['tab']) && $_GET['tab'] === 'extensions' &&
+            (!isset($_GET['section']) || $_GET['section'] === 's3cs-settings');
+
         // Only try to get buckets if we have complete configuration
         $bucket_options = array('' => __('-- Select Bucket --', 'storage-for-edd-via-s3-compatible'));
 
-        if ($is_configured_for_buckets) {
+        if ($is_configured_for_buckets && $is_settings_page) {
             try {
                 $buckets = $this->client->getBucketsList();
                 if (is_array($buckets) && !empty($buckets)) {

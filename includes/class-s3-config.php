@@ -145,11 +145,11 @@ class S3CS_EDD_S3_Config
                 $message = wp_json_encode($log, JSON_UNESCAPED_UNICODE);
                 if ($message !== false) {
                     // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                    error_log('[S3CS_EDD] ' . $message);
+                    error_log('[S3CS] ' . $message);
                 }
             } else {
                 // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-                error_log('[S3CS_EDD] ' . sanitize_text_field($log));
+                error_log('[S3CS] ' . sanitize_text_field($log));
             }
         }
     }

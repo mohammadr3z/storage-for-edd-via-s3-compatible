@@ -40,7 +40,7 @@ jQuery(function ($) {
     });
 
     // Search functionality for S3 files
-    $('#s3cs-file-search').on('input', function () {
+    $('#s3cs-file-search').on('input search', function () {
         var searchTerm = $(this).val().toLowerCase();
         var $fileRows = $('.s3cs-files-table tbody tr');
         var visibleCount = 0;
@@ -70,10 +70,7 @@ jQuery(function ($) {
         }
     });
 
-    // Clear search functionality
-    $('#s3cs-clear-search').click(function () {
-        $('#s3cs-file-search').val('').trigger('input');
-    });
+
 
     // Add keyboard shortcut for search (Ctrl+F or Cmd+F)
     $(document).keydown(function (e) {

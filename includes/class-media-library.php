@@ -209,15 +209,10 @@ class S3CS_EDD_S3_Media_Library
                     <!-- Moved Search Input -->
                     <?php if (is_array($files) && !empty($files)) { ?>
                         <div class="s3cs-search-inline">
-                            <input type="text"
+                            <input type="search"
                                 id="s3cs-file-search"
                                 class="s3cs-search-input"
                                 placeholder="<?php esc_attr_e('Search files...', 'storage-for-edd-via-s3-compatible'); ?>">
-                            <button type="button"
-                                id="s3cs-clear-search"
-                                class="button">
-                                <?php esc_html_e('Clear', 'storage-for-edd-via-s3-compatible'); ?>
-                            </button>
                         </div>
                     <?php } ?>
                 </div>
@@ -342,9 +337,6 @@ class S3CS_EDD_S3_Media_Library
                                     <td class="column-primary" data-label="<?php esc_attr_e('File Name', 'storage-for-edd-via-s3-compatible'); ?>">
                                         <div class="s3cs-file-display">
                                             <span class="file-name"><?php echo esc_html($file['name']); ?></span>
-                                            <?php if (!empty($path)) { ?>
-                                                <span class="file-path"><?php echo esc_html($path); ?></span>
-                                            <?php } ?>
                                         </div>
                                     </td>
                                     <td class="column-size" data-label="<?php esc_attr_e('File Size', 'storage-for-edd-via-s3-compatible'); ?>">
@@ -398,104 +390,7 @@ class S3CS_EDD_S3_Media_Library
         return !empty($_GET['path']) ? sanitize_text_field(wp_unslash($_GET['path'])) : '';
     }
 
-    /**
-     * Get detailed information about files from S3
-     * @param array $files
-     * @return array
-     */
-    private function getFileDetails($files)
-    {
-        $client = $this->client->getClient();
-        $bucket = $this->config->getBucket();
-        $details = array();
 
-        if (!$client || !$bucket || empty($files)) {
-            return $details;
-        }
-
-        try {
-            $endpoint = $this->config->getEndpoint();
-            $accessKey = $this->config->getAccessKey();
-            $secretKey = $this->config->getSecretKey();
-            $region = $this->config->getRegion();
-
-            // Create authorization for list objects v2 with detailed info
-            $date = gmdate('Ymd\THis\Z');
-            $shortDate = gmdate('Ymd');
-            $service = 's3';
-
-            $method = 'GET';
-            $canonicalUri = "/" . $bucket;
-            $canonicalQueryString = 'list-type=2';
-
-            $canonicalHeaders = "host:" . wp_parse_url($endpoint, PHP_URL_HOST) . "\nx-amz-content-sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\nx-amz-date:$date\n";
-            $signedHeaders = 'host;x-amz-content-sha256;x-amz-date';
-            $payloadHash = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
-
-            $canonicalRequest = "$method\n$canonicalUri\n$canonicalQueryString\n$canonicalHeaders\n$signedHeaders\n$payloadHash";
-
-            $algorithm = 'AWS4-HMAC-SHA256';
-            $credentialScope = "$shortDate/$region/$service/aws4_request";
-            $stringToSign = "$algorithm\n$date\n$credentialScope\n" . hash('sha256', $canonicalRequest);
-
-            $kSecret = 'AWS4' . $secretKey;
-            $kDate = hash_hmac('sha256', $shortDate, $kSecret, true);
-            $kRegion = hash_hmac('sha256', $region, $kDate, true);
-            $kService = hash_hmac('sha256', $service, $kRegion, true);
-            $kSigning = hash_hmac('sha256', 'aws4_request', $kService, true);
-            $signature = hash_hmac('sha256', $stringToSign, $kSigning);
-
-            $authorization = "$algorithm Credential=$accessKey/$credentialScope, SignedHeaders=$signedHeaders, Signature=$signature";
-
-            $requestUrl = rtrim($endpoint, '/') . "/$bucket?list-type=2";
-
-            $response = $client->request('GET', $requestUrl, [
-                'headers' => [
-                    'Host' => wp_parse_url($endpoint, PHP_URL_HOST),
-                    'X-Amz-Content-SHA256' => $payloadHash,
-                    'X-Amz-Date' => $date,
-                    'Authorization' => $authorization
-                ]
-            ]);
-
-            // Get response content
-            $responseContent = $response->getBody()->getContents();
-
-            // Suppress warnings and check if content is valid XML
-            libxml_use_internal_errors(true);
-            $xml = simplexml_load_string($responseContent);
-
-            // If XML parsing failed, log the error
-            if ($xml === false) {
-                $errors = libxml_get_errors();
-                libxml_clear_errors();
-                $errorMsg = 'XML parsing error: ';
-                foreach ($errors as $error) {
-                    $errorMsg .= $error->message . ' ';
-                }
-                $this->config->debug($errorMsg);
-                $this->config->debug('Response status: ' . $response->getStatusCode() . ' - XML parsing failed');
-                libxml_use_internal_errors(false);
-                return $details;
-            }
-            libxml_use_internal_errors(false);
-
-            if (isset($xml->Contents)) {
-                foreach ($xml->Contents as $object) {
-                    $key = (string)$object->Key;
-                    $details[$key] = array(
-                        'size' => (int)$object->Size,
-                        'last_modified' => (string)$object->LastModified,
-                        'owner' => isset($object->Owner->DisplayName) ? (string)$object->Owner->DisplayName : esc_html__('Unknown', 'storage-for-edd-via-s3-compatible')
-                    );
-                }
-            }
-        } catch (Exception $e) {
-            $this->config->debug('Error getting file details: ' . $e->getMessage());
-        }
-
-        return $details;
-    }
 
     /**
      * Format file size in human readable format
@@ -561,7 +456,7 @@ class S3CS_EDD_S3_Media_Library
         // Add URL prefix as inline script
         wp_add_inline_script('s3cs-upload', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
         // Add max upload size as inline script
-        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_max_upload_size = ' . wp_max_upload_size() . ';', 'before');
+        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_max_upload_size = ' . wp_json_encode(wp_max_upload_size()) . ';', 'before');
 
         // Add URL prefix as inline script
         wp_add_inline_script('s3cs-admin-upload-buttons', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');

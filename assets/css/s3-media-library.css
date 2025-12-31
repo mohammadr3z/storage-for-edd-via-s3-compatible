@@ -91,9 +91,7 @@ html[dir="rtl"] .s3cs-nav-group {
     margin: 0 !important;
 }
 
-.s3cs-search-inline .button {
-    margin: 0 !important;
-}
+
 
 .s3cs-nav-back {
     display: flex;
@@ -243,15 +241,33 @@ body.rtl .s3cs-breadcrumbs span {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* RTL Support for File Name and Column Size */
+html[dir="rtl"] .s3cs-files-table .file-name,
+body.rtl .s3cs-files-table .file-name,
+html[dir="rtl"] .s3cs-files-table td.column-size,
+body.rtl .s3cs-files-table td.column-size {
     direction: ltr;
+}
+
+/* LTR: left-align file names */
+.s3cs-files-table .file-name,
+.s3cs-files-table td.column-size {
+    text-align: left;
+}
+
+/* RTL: right-align file names */
+html[dir="rtl"] .s3cs-files-table .file-name,
+body.rtl .s3cs-files-table .file-name,
+html[dir="rtl"] .s3cs-files-table td.column-size,
+body.rtl .s3cs-files-table td.column-size {
     text-align: right;
 }
 
 /* File Display Container */
 .s3cs-file-display {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    display: block;
 }
 
 .s3cs-file-display .file-name {
@@ -260,21 +276,6 @@ body.rtl .s3cs-breadcrumbs span {
     line-height: 1.5;
     display: block;
     letter-spacing: 0.01em;
-    order: 1;
-}
-
-.s3cs-file-display .file-path {
-    font-size: 11px;
-    font-weight: 400;
-    font-style: normal;
-    padding: 3px 0;
-    background: transparent;
-    border-radius: 0;
-    display: block;
-    max-width: 100%;
-    word-break: break-all;
-    opacity: 0.85;
-    order: 2;
 }
 
 /* Folder row styling */
@@ -378,8 +379,7 @@ body.rtl .s3cs-notice.success {
 
 
 .s3cs-files-table .file-size,
-.s3cs-files-table .file-date,
-.s3cs-files-table .file-owner {
+.s3cs-files-table .file-date {
     color: #50575e;
     font-size: 0.9em;
 }
@@ -397,6 +397,36 @@ body.rtl .s3cs-notice.success {
 @media screen and (max-width: 782px) {
     body#media-upload {
         padding: 15px;
+    }
+
+    /* Breadcrumb navigation responsive */
+    .s3cs-breadcrumb-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .s3cs-nav-group {
+        margin: 0;
+        width: 100%;
+    }
+
+    .s3cs-breadcrumbs {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .s3cs-breadcrumbs .sep {
+        margin: 0 2px;
+    }
+
+    .s3cs-search-inline {
+        width: 100%;
+    }
+
+    .s3cs-search-inline .s3cs-search-input {
+        width: 100% !important;
+        flex: 1;
     }
 
     .s3cs-files-table {
@@ -417,10 +447,7 @@ body.rtl .s3cs-notice.success {
         padding: 8px !important;
     }
 
-    /* Hide file path on mobile */
-    .s3cs-file-display .file-path {
-        display: none;
-    }
+
 
     /* Search responsive styles */
     .s3cs-search-container {
@@ -442,14 +469,4 @@ body.rtl .s3cs-notice.success {
         /* Prevents zoom on iOS */
         height: 44px;
     }
-
-    #s3cs-clear-search {
-        width: 100%;
-        padding: 10px 12px;
-        text-align: center;
-        font-size: 14px;
-        height: 44px;
-        min-width: auto;
-    }
-
 }

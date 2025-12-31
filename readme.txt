@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -152,9 +152,18 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 
 == Screenshots ==
 
-1. Admin panel user interface
-2. File selection from S3 storage section
-3. File upload to S3 storage interface
+1. Plugin settings panel
+2. File browser and file list
+3. Upload form (expanded)
+
+= 1.1.6 =
+* Added: Native search input type with clear ("X") icon support for a cleaner UI.
+* Improved: Mobile breadcrumb navigation with path wrapping for long directory names.
+* Improved: Reduced separator spacing in breadcrumbs on mobile devices.
+* Improved: Standardized header row spacing and title font sizes for UI consistency.
+* Improved: Enhanced notice detail styling for better error/success message readability.
+* Security: Standardized use of wp_json_encode() for client-side data.
+* Cleaned: Removed unused "Owner" metadata logic and legacy CSS rules.
 
 = 1.1.5 =
 * Improved: Media library table styling for more consistent file and folder display.

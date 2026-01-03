@@ -152,9 +152,11 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 
 == Screenshots ==
 
-1. Plugin settings panel
-2. File browser and file list
-3. Upload form (expanded)
+1. Admin panel user interface
+2. File selection from S3 storage section
+3. File upload to S3 storage interface
+
+== Changelog ==
 
 = 1.1.6 =
 * Added: Native search input type with clear ("X") icon support for a cleaner UI.

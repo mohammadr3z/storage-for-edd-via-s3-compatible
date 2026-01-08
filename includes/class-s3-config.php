@@ -3,6 +3,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * S3 Configuration Manager
+ *
+ * Handles all S3-Compatible API configuration including Access Keys,
+ * Secret Keys, Endpoints, and bucket settings.
+ */
 class S3CS_EDD_S3_Config
 {
     const KEY_ACCESS_KEY = 's3cs_edd_access_key';

@@ -3,6 +3,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * S3 API Client
+ *
+ * Handles all S3 API communications including authentication,
+ * file listing, uploads, and download link generation.
+ */
 class S3CS_EDD_S3_Client
 {
     private $httpClient = null;
@@ -144,22 +150,7 @@ class S3CS_EDD_S3_Client
         }
     }
 
-    /**
-     * List files in the S3 bucket for the given prefix.
-     * @param string $prefix
-     * @return array
-     */
-    public function listFiles($prefix = '')
-    {
-        $result = $this->listFilesWithFolders($prefix);
-        $files = array();
-        foreach ($result as $item) {
-            if (!$item['is_folder']) {
-                $files[] = $item['path'];
-            }
-        }
-        return $files;
-    }
+
 
     /**
      * List files and folders in the S3 bucket for the given prefix.

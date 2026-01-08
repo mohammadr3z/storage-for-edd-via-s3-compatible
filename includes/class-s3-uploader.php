@@ -3,6 +3,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * S3 Uploader
+ *
+ * Handles file uploads to S3 from WordPress admin.
+ */
 class S3CS_EDD_S3_Uploader
 {
     private $client;

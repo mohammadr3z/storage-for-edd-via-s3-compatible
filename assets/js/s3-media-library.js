@@ -4,18 +4,16 @@ jQuery(function ($) {
         var fileurl = s3cs_edd_url_prefix + $(this).data('s3cs-link');
         var success = false;
 
+        // Support for new modal Browse button
         if (parent.window && parent.window !== window) {
-            if (parent.window.edd_filename && parent.window.edd_fileurl) {
-                $(parent.window.edd_filename).val(filename);
-                $(parent.window.edd_fileurl).val(fileurl);
+            if (parent.window.s3cs_current_name_input && parent.window.s3cs_current_url_input) {
+                parent.window.s3cs_current_name_input.val(filename);
+                parent.window.s3cs_current_url_input.val(fileurl);
                 success = true;
-                try { parent.window.tb_remove(); } catch (e) { parent.window.tb_remove(); }
-            }
-        } else {
-            if (window.edd_filename && window.edd_fileurl) {
-                $(window.edd_filename).val(filename);
-                $(window.edd_fileurl).val(fileurl);
-                success = true;
+                // Close the modal
+                if (parent.window.S3CSModal) {
+                    parent.window.S3CSModal.close();
+                }
             }
         }
 
@@ -30,9 +28,7 @@ jQuery(function ($) {
             }
         }
 
-        if (success) {
-            alert(s3cs_edd_i18n.file_selected_success);
-        } else {
+        if (!success) {
             alert(s3cs_edd_i18n.file_selected_error);
         }
 

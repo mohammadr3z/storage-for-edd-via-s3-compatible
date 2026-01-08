@@ -3,6 +3,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * S3 Media Library Integration
+ *
+ * Adds custom tabs to WordPress media uploader for browsing
+ * and uploading files to S3.
+ */
 class S3CS_EDD_S3_Media_Library
 {
     private $client;
@@ -14,21 +20,19 @@ class S3CS_EDD_S3_Media_Library
         $this->client = new S3CS_EDD_S3_Client();
 
         // Media library integration
-        add_filter('media_upload_tabs', array($this, 'addS3Tabs'));
         add_action('media_upload_s3cs_lib', array($this, 'registerS3LibTab'));
-        add_action('admin_head', array($this, 'setupAdminJS'));
 
         // Enqueue styles
         add_action('admin_enqueue_scripts', array($this, 'enqueueStyles'));
+
+        // Add S3 button to EDD downloadable files (Server-Side)
+        add_action('edd_download_file_table_row', array($this, 'renderBrowseButton'), 10, 3);
+
+        // Add scripts for S3 button interaction
+        add_action('admin_footer', array($this, 'printAdminScripts'));
     }
 
-    public function addS3Tabs($default_tabs)
-    {
-        if ($this->config->isConfiguredForBucketList()) {
-            $default_tabs['s3cs_lib'] = esc_html__('S3 Library', 'storage-for-edd-via-s3-compatible');
-        }
-        return $default_tabs;
-    }
+
 
     public function registerS3LibTab()
     {
@@ -61,7 +65,6 @@ class S3CS_EDD_S3_Media_Library
 
     public function renderS3LibTab()
     {
-        media_upload_header();
         wp_enqueue_style('media');
         // Enqueue S3 styles and scripts
         wp_enqueue_style('s3cs-media-library');
@@ -206,7 +209,6 @@ class S3CS_EDD_S3_Media_Library
                         </div>
                     </div>
 
-                    <!-- Moved Search Input -->
                     <?php if (is_array($files) && !empty($files)) { ?>
                         <div class="s3cs-search-inline">
                             <input type="search"
@@ -365,15 +367,9 @@ class S3CS_EDD_S3_Media_Library
 
             <?php } ?>
         </div>
-<?php
+    <?php
     }
 
-
-    public function setupAdminJS()
-    {
-        // Enqueue the admin upload buttons script
-        wp_enqueue_script('s3cs-admin-upload-buttons');
-    }
 
     /**
      * Get current path from GET param.
@@ -431,15 +427,17 @@ class S3CS_EDD_S3_Media_Library
      */
     public function enqueueStyles()
     {
-        // Register styles - we'll enqueue them directly in the tabs where needed
+        // Register styles
         wp_register_style('s3cs-media-library', S3CS_EDD_PLUGIN_URL . 'assets/css/s3-media-library.css', array(), S3CS_EDD_VERSION);
         wp_register_style('s3cs-upload', S3CS_EDD_PLUGIN_URL . 'assets/css/s3-upload.css', array(), S3CS_EDD_VERSION);
         wp_register_style('s3cs-media-container', S3CS_EDD_PLUGIN_URL . 'assets/css/s3-media-container.css', array(), S3CS_EDD_VERSION);
+        wp_register_style('s3cs-modal', S3CS_EDD_PLUGIN_URL . 'assets/css/s3-modal.css', array('dashicons'), S3CS_EDD_VERSION);
 
         // Register scripts
         wp_register_script('s3cs-media-library', S3CS_EDD_PLUGIN_URL . 'assets/js/s3-media-library.js', array('jquery'), S3CS_EDD_VERSION, true);
         wp_register_script('s3cs-upload', S3CS_EDD_PLUGIN_URL . 'assets/js/s3-upload.js', array('jquery'), S3CS_EDD_VERSION, true);
-        wp_register_script('s3cs-admin-upload-buttons', S3CS_EDD_PLUGIN_URL . 'assets/js/admin-upload-buttons.js', array('jquery'), S3CS_EDD_VERSION, true);
+        wp_register_script('s3cs-modal', S3CS_EDD_PLUGIN_URL . 'assets/js/s3-modal.js', array('jquery'), S3CS_EDD_VERSION, true);
+        wp_register_script('s3cs-modal', S3CS_EDD_PLUGIN_URL . 'assets/js/s3-modal.js', array('jquery'), S3CS_EDD_VERSION, true);
 
         // Localize scripts
         wp_localize_script('s3cs-media-library', 's3cs_edd_i18n', array(
@@ -459,6 +457,143 @@ class S3CS_EDD_S3_Media_Library
         wp_add_inline_script('s3cs-upload', 'var s3cs_edd_max_upload_size = ' . wp_json_encode(wp_max_upload_size()) . ';', 'before');
 
         // Add URL prefix as inline script
-        wp_add_inline_script('s3cs-admin-upload-buttons', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
+        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_url_prefix = "' . esc_js($this->config->getUrlPrefix()) . '";', 'before');
+        // Add max upload size as inline script
+        wp_add_inline_script('s3cs-upload', 'var s3cs_edd_max_upload_size = ' . wp_json_encode(wp_max_upload_size()) . ';', 'before');
+    }
+
+    /**
+     * Render Browse S3 button in EDD file row (Server Side)
+     */
+    public function renderBrowseButton($key, $file, $post_id)
+    {
+        if (!$this->config->isConfigured()) {
+            return;
+        }
+    ?>
+        <div class="edd-form-group edd-file-s3-browse">
+            <label class="edd-form-group__label edd-repeatable-row-setting-label">&nbsp;</label>
+            <div class="edd-form-group__control">
+                <button type="button" class="button s3cs_browse_button" title="<?php esc_attr_e('Browse S3', 'storage-for-edd-via-s3-compatible'); ?>">
+                    <?php esc_html_e('Browse S3', 'storage-for-edd-via-s3-compatible'); ?>
+                </button>
+            </div>
+        </div>
+    <?php
+    }
+
+    /**
+     * Add Scripts and Styles for S3 Button (Admin Footer)
+     */
+    public function printAdminScripts()
+    {
+        // Don't show buttons if not configured
+        if (!$this->config->isConfigured()) {
+            return;
+        }
+
+        global $typenow;
+        if ($typenow !== 'download') {
+            return;
+        }
+
+        // Only on EDD download edit pages
+        $screen = get_current_screen();
+        if (!$screen || $screen->post_type !== 'download') {
+            return;
+        }
+
+        // Enqueue modal assets
+        wp_enqueue_style('s3cs-modal');
+        wp_enqueue_script('s3cs-modal');
+
+        $s3_url = admin_url('media-upload.php?type=s3cs_lib&tab=s3cs_lib');
+    ?>
+        <style>
+            .edd-file-s3-browse {
+                width: auto !important;
+                flex: 0 0 auto !important;
+                align-self: flex-end !important;
+            }
+
+            @media screen and (max-width: 782px) {
+                .edd-file-s3-browse {
+                    width: 100% !important;
+                    display: block;
+                    margin-top: 10px;
+                }
+
+                .edd-file-s3-browse .s3cs_browse_button {
+                    width: 100% !important;
+                    display: block;
+                }
+            }
+
+            .edd-file-s3-browse .edd-form-group__label {
+                display: none !important;
+            }
+
+            .s3cs_browse_button {
+                background: #d97706 !important;
+                color: #fff !important;
+                border-color: #d97706 !important;
+                padding: 4px 12px !important;
+                height: auto !important;
+                line-height: 1.4 !important;
+                font-size: 13px !important;
+                cursor: pointer !important;
+            }
+
+            .s3cs_browse_button:hover,
+            .s3cs_browse_button:focus {
+                background: #b45309 !important;
+                color: #fff !important;
+                border-color: #b45309 !important;
+            }
+        </style>
+        <script type="text/javascript">
+            jQuery(function($) {
+                var s3Url = '<?php echo esc_js($s3_url); ?>';
+                var wpNonce = '<?php echo wp_create_nonce("media-form"); ?>';
+                var modalTitle = '<?php echo esc_js(__('S3 Library', 'storage-for-edd-via-s3-compatible')); ?>';
+                var urlPrefix = '<?php echo esc_js($this->config->getUrlPrefix()); ?>';
+
+                // Event delegation for all browse buttons
+                $(document).on('click', '.s3cs_browse_button', function(e) {
+                    e.preventDefault();
+
+                    var $btn = $(this);
+                    var $row = $btn.closest('.edd_repeatable_row');
+
+                    // Store references to the input fields for this row
+                    window.s3cs_current_row = $row;
+                    window.s3cs_current_name_input = $row.find('input[name^="edd_download_files"][name$="[name]"]');
+                    window.s3cs_current_url_input = $row.find('input[name^="edd_download_files"][name$="[file]"]');
+
+                    // Context-Aware: Extract folder path from current URL
+                    var currentUrl = window.s3cs_current_url_input.val();
+                    var folderPath = '';
+
+                    if (currentUrl && currentUrl.indexOf(urlPrefix) === 0) {
+                        // Remove prefix
+                        var path = currentUrl.substring(urlPrefix.length);
+                        // Remove filename, keep folder path
+                        var lastSlash = path.lastIndexOf('/');
+                        if (lastSlash !== -1) {
+                            folderPath = path.substring(0, lastSlash);
+                        }
+                    }
+
+                    var modalUrl = s3Url + '&_wpnonce=' + wpNonce;
+                    if (folderPath) {
+                        modalUrl += '&path=' + encodeURIComponent(folderPath);
+                    }
+
+                    // Open Modal
+                    S3CSModal.open(modalUrl, modalTitle);
+                });
+            });
+        </script>
+<?php
     }
 }

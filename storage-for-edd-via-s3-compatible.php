@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Storage for EDD via S3-Compatible
  * Description: Enable secure cloud storage and delivery of your digital products through S3-compatible services for Easy Digital Downloads.
- * Version: 1.1.6
+ * Version: 1.1.7
  * Author: mohammadr3z
  * Requires Plugins: easy-digital-downloads
  * License: GPL-2.0-or-later
@@ -31,7 +31,7 @@ if (!defined('S3CS_EDD_PLUGIN_URL')) {
     define('S3CS_EDD_PLUGIN_URL', plugin_dir_url(__FILE__));
 }
 if (!defined('S3CS_EDD_VERSION')) {
-    define('S3CS_EDD_VERSION', '1.1.6');
+    define('S3CS_EDD_VERSION', '1.1.7');
 }
 
 // Load plugin classes

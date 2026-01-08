@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,19 +47,23 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
 
 == Usage ==
 
-= Uploading Files =
+= Browsing and Selecting Files =
 
 1. When creating or editing a download in Easy Digital Downloads
 2. Click on "Upload File" or "Choose File"
-3. Select the "Upload to S3" tab
-4. Choose your file and upload it directly to S3 storage
-5. The file URL will be automatically set with the S3 prefix
+3. Select the "S3 Library" tab
+4. Browse your S3 storage using the folder navigation
+5. Use the breadcrumb navigation bar to quickly jump to parent folders
+6. Use the search box in the header to filter files by name
+7. Click "Select" to use an existing file for your download
 
-= File Management =
+= Uploading New Files =
 
-* Use the "S3 Library" tab to browse existing files in your S3 storage
-* Files are organized by the path structure in your S3 bucket
-* Click "Select" to use an existing file for your download
+1. In the "S3 Library" tab, click the "Upload" button in the header row
+2. The upload form will appear above the file list
+3. Choose your file and click "Upload"
+4. After a successful upload, the file URL will be automatically set with the S3 prefix
+5. Click "Back" to return to the file browser without uploading
 
 == Frequently Asked Questions ==
 
@@ -152,11 +156,19 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 
 == Screenshots ==
 
-1. Admin panel user interface
-2. File selection from S3 storage section
-3. File upload to S3 storage interface
+1. Plugin Settings
+2. Browse button for link selection
+3. Library popup display
+4. Upload form display
 
 == Changelog ==
+
+= 1.1.7 =
+* Added: New "Browse" button next to file inputs for easier file selection.
+* Improved: Modernized file browser UI with a dedicated modal window.
+* Improved: File browser is now context-aware, opening directly to the selected file's folder.
+* Improved: Browse button is automatically hidden if the plugin is not configured.
+* Improved: Removed legacy "S3 Library" tab from the standard WordPress media uploader for a cleaner interface.
 
 = 1.1.6 =
 * Added: Native search input type with clear ("X") icon support for a cleaner UI.
@@ -269,6 +281,18 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 * Admin settings interface
 * Security enhancements and validation
 * Internationalization support
+
+== External services ==
+
+This plugin connects to your configured S3-compatible storage service to manage files, create download links, and handle file transfers.
+
+It sends the necessary authentication signatures and file requests to your S3 provider's servers. This happens when you browse your S3 files in the dashboard, upload files, or when a customer downloads a file.
+
+* **Service**: Your S3-Compatible Provider (e.g., AWS S3, DigitalOcean Spaces, etc.)
+* **Used for**: File browsing, uploading, and generating secure download links.
+* **Data sent**: Authentication headers (Signature V4), file metadata, file content (during upload).
+* **URLs**: Configured by the user in the plugin settings (Endpoint URL).
+* **Legal**: Refer to your S1-Compatible provider's Terms of Service and Privacy Policy.
 
 == Support ==
 

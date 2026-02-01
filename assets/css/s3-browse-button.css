@@ -1,0 +1,45 @@
+/**
+ * S3 Browse Button Styles
+ * Used in EDD download files section
+ */
+
+.edd-file-s3-browse {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    align-self: flex-end !important;
+}
+
+@media screen and (max-width: 782px) {
+    .edd-file-s3-browse {
+        width: 100% !important;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .edd-file-s3-browse .s3cs_browse_button {
+        width: 100% !important;
+        display: block;
+    }
+}
+
+.edd-file-s3-browse .edd-form-group__label {
+    display: none !important;
+}
+
+.s3cs_browse_button {
+    background: #d97706 !important;
+    color: #fff !important;
+    border-color: #d97706 !important;
+    padding: 4px 12px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+}
+
+.s3cs_browse_button:hover,
+.s3cs_browse_button:focus {
+    background: #b45309 !important;
+    color: #fff !important;
+    border-color: #b45309 !important;
+}

@@ -1,0 +1,472 @@
+/* Modern S3 Library File Table Styles */
+body#media-upload {
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+/* Header Row with Upload Button */
+.s3cs-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.s3cs-header-row .media-title {
+    margin: 0;
+    font-size: 20px;
+    color: #1d2327;
+}
+
+.s3cs-header-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Upload button - Orange style matching back button */
+#s3cs-toggle-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border: none !important;
+    border-radius: 6px;
+    background-color: #d97706 !important;
+    color: #fff !important;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+#s3cs-toggle-upload:hover,
+#s3cs-toggle-upload:focus {
+    background-color: #b45309 !important;
+    color: #fff !important;
+    box-shadow: none;
+    outline: none;
+}
+
+/* New Breadcrumb Navigation */
+.s3cs-breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.s3cs-nav-group {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+html[dir="rtl"] .s3cs-nav-group {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+.s3cs-search-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.s3cs-search-inline .s3cs-search-input {
+    width: 200px !important;
+    padding: 1px 10px !important;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 !important;
+}
+
+
+
+.s3cs-nav-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 15px;
+    /* LTR */
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+html[dir="rtl"] .s3cs-nav-back,
+body.rtl .s3cs-nav-back {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+.s3cs-nav-back:hover {
+    background-color: #135e96;
+    color: #fff;
+}
+
+.s3cs-nav-back:focus {
+    background-color: #135e96;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+}
+
+.s3cs-nav-back.disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+}
+
+.s3cs-nav-back .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+}
+
+.s3cs-breadcrumbs {
+    font-size: 14px;
+    color: #646970;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+.s3cs-breadcrumbs a {
+    color: #2271b1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.s3cs-breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.s3cs-breadcrumbs .sep {
+    margin: 0 8px;
+    color: #a7aaad;
+    font-weight: 300;
+}
+
+.s3cs-breadcrumbs .current {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+/* RTL Support for Breadcrumb */
+html[dir="rtl"] .s3cs-nav-back,
+body.rtl .s3cs-nav-back {
+    margin-right: 0;
+    margin-left: 15px;
+}
+
+html[dir="rtl"] .s3cs-nav-back .dashicons,
+body.rtl .s3cs-nav-back .dashicons {
+    transform: scaleX(-1);
+}
+
+html[dir="rtl"] .s3cs-breadcrumbs,
+body.rtl .s3cs-breadcrumbs {
+    direction: rtl !important;
+    text-align: right !important;
+    unicode-bidi: embed;
+}
+
+/* Ensure Links and Spans follow direction */
+html[dir="rtl"] .s3cs-breadcrumbs a,
+html[dir="rtl"] .s3cs-breadcrumbs span,
+body.rtl .s3cs-breadcrumbs a,
+body.rtl .s3cs-breadcrumbs span {
+    display: inline-block;
+}
+
+/* ... existing styles ... */
+
+.s3cs-files-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.s3cs-files-table th {
+    background: #f8f9fa;
+    color: #1d2327;
+    padding: 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e4e7;
+    white-space: nowrap;
+}
+
+.s3cs-files-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f1;
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.s3cs-files-table tr:last-child td {
+    border-bottom: none;
+}
+
+.s3cs-files-table tr:hover td {
+    background-color: #f8f9fa;
+}
+
+.s3cs-files-table .file-name {
+    font-weight: 500;
+    color: #2271b1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* RTL Support for File Name and Column Size */
+html[dir="rtl"] .s3cs-files-table .file-name,
+body.rtl .s3cs-files-table .file-name,
+html[dir="rtl"] .s3cs-files-table td.column-size,
+body.rtl .s3cs-files-table td.column-size {
+    direction: ltr;
+}
+
+/* LTR: left-align file names */
+.s3cs-files-table .file-name,
+.s3cs-files-table td.column-size {
+    text-align: left;
+}
+
+/* RTL: right-align file names */
+html[dir="rtl"] .s3cs-files-table .file-name,
+body.rtl .s3cs-files-table .file-name,
+html[dir="rtl"] .s3cs-files-table td.column-size,
+body.rtl .s3cs-files-table td.column-size {
+    text-align: right;
+}
+
+/* File Display Container */
+.s3cs-file-display {
+    display: block;
+}
+
+.s3cs-file-display .file-name {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.5;
+    display: block;
+    letter-spacing: 0.01em;
+}
+
+/* Folder row styling */
+.s3cs-folder-row {
+    background: #fffbeb;
+    position: relative;
+}
+
+.s3cs-folder-row:hover td {
+    background: #fef3c7;
+}
+
+.s3cs-folder-row .folder-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #92400e;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    position: relative;
+    z-index: 1;
+    padding: 4px 8px;
+    margin: -4px -8px;
+}
+
+.s3cs-folder-row .folder-link:hover {
+    color: #2271b1;
+    background: rgba(34, 113, 177, 0.08);
+}
+
+/* Small folder icon next to text */
+.s3cs-folder-row .folder-link .dashicons {
+    color: #d97706;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.s3cs-folder-row .folder-link:hover .dashicons {
+    color: #2271b1;
+}
+
+.s3cs-folder-row .folder-link .file-name {
+    line-height: 1.4;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Notices */
+.s3cs-notice {
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.s3cs-notice.warning {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.s3cs-notice.success {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+/* RTL Support for Notices */
+/* RTL Support for Notices */
+html[dir="rtl"] .s3cs-notice.warning,
+body.rtl .s3cs-notice.warning {
+    border-left: none !important;
+    border-right: 4px solid #ffc107;
+}
+
+html[dir="rtl"] .s3cs-notice.success,
+body.rtl .s3cs-notice.success {
+    border-left: none !important;
+    border-right: 4px solid #28a745;
+}
+
+.s3cs-notice h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+
+.s3cs-notice p {
+    margin: 5px 0;
+}
+
+.s3cs-notice-details ul {
+    margin: 10px 0 10px 20px;
+    list-style: disc;
+}
+
+
+.s3cs-files-table .file-size,
+.s3cs-files-table .file-date {
+    color: #50575e;
+    font-size: 0.9em;
+}
+
+.button-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    height: auto;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    body#media-upload {
+        padding: 15px;
+    }
+
+    /* Breadcrumb navigation responsive */
+    .s3cs-breadcrumb-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .s3cs-nav-group {
+        margin: 0;
+        width: 100%;
+    }
+
+    .s3cs-breadcrumbs {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .s3cs-breadcrumbs .sep {
+        margin: 0 2px;
+    }
+
+    .s3cs-search-inline {
+        width: 100%;
+    }
+
+    .s3cs-search-inline .s3cs-search-input {
+        width: 100% !important;
+        flex: 1;
+    }
+
+    .s3cs-files-table {
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    /* Hide size and date columns on mobile */
+    .s3cs-files-table .column-size,
+    .s3cs-files-table .column-date {
+        display: none !important;
+    }
+
+    /* Override WordPress default that hides columns after column-primary */
+    .s3cs-files-table.wp-list-table th.column-primary~th.column-actions,
+    .s3cs-files-table.wp-list-table tr:not(.inline-edit-row):not(.no-items) td.column-primary~td.column-actions {
+        display: table-cell !important;
+        padding: 8px !important;
+    }
+
+
+
+    /* Search responsive styles */
+    .s3cs-search-container {
+        margin: 15px 0;
+        padding: 12px;
+    }
+
+    .s3cs-search-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: none;
+        gap: 10px;
+    }
+
+    #s3cs-file-search {
+        width: 100%;
+        padding: 10px 12px;
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+        height: 44px;
+    }
+}

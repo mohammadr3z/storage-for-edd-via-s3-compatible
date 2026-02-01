@@ -1,0 +1,9 @@
+.edd-s3cs-bucket-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.edd-s3cs-bucket-disabled select {
+    background-color: #f1f1f1 !important;
+    cursor: not-allowed !important;
+}

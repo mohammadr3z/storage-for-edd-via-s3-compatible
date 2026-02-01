@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -50,20 +50,19 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
 = Browsing and Selecting Files =
 
 1. When creating or editing a download in Easy Digital Downloads
-2. Click on "Upload File" or "Choose File"
-3. Select the "S3 Library" tab
-4. Browse your S3 storage using the folder navigation
-5. Use the breadcrumb navigation bar to quickly jump to parent folders
-6. Use the search box in the header to filter files by name
-7. Click "Select" to use an existing file for your download
+2. Click the "Browse S3" button next to the file URL field
+3. Browse your S3 storage using the folder navigation
+4. Use the breadcrumb navigation bar to quickly jump to parent folders
+5. Use the search box in the header to filter files by name
+6. Click "Select" to use an existing file for your download
 
 = Uploading New Files =
 
-1. In the "S3 Library" tab, click the "Upload" button in the header row
+1. In the S3 browser, click the "Upload" button in the header row
 2. The upload form will appear above the file list
 3. Choose your file and click "Upload"
 4. After a successful upload, the file URL will be automatically set with the S3 prefix
-5. Click "Back" to return to the file browser without uploading
+5. Click the button again to hide the upload form
 
 == Frequently Asked Questions ==
 
@@ -161,6 +160,9 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.1.9 =
+* Updated: Guzzle HTTP library to version 7.10.0 for PHP 8.5 compatibility.
 
 = 1.1.8 =
 * Use wp_enqueue commands: Replaced inline <style> and <script> in includes/class-media-library.php (admin media library)

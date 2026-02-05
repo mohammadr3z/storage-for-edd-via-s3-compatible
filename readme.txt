@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.1.9
+Stable tag: 1.1.10
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -160,6 +160,11 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.1.10 =
+* Improved: UI styles and enhanced layout consistency for better harmony.
+* Improved: Comprehensive code improvements and stability optimizations.
+* Added: Skeleton loader with shimmer animation for better UX while loading S3 browser modal.
 
 = 1.1.9 =
 * Updated: Guzzle HTTP library to version 7.10.0 for PHP 8.5 compatibility.

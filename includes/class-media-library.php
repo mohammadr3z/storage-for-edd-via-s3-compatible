@@ -383,7 +383,7 @@ class S3CS_EDD_S3_Media_Library
                 wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'));
             }
         }
-        return !empty($_GET['path']) ? sanitize_text_field(wp_unslash($_GET['path'])) : '';
+        return !empty($_GET['path']) ? trim(sanitize_text_field(wp_unslash($_GET['path']))) : '';
     }
 
 
@@ -395,10 +395,13 @@ class S3CS_EDD_S3_Media_Library
      */
     private function formatFileSize($size)
     {
-        if ($size == 0) return '0 B';
+        if ($size === 0) return '0 B';
 
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
         $power = floor(log($size, 1024));
+        if ($power >= count($units)) {
+            $power = count($units) - 1;
+        }
 
         return round($size / pow(1024, $power), 2) . ' ' . $units[$power];
     }
@@ -493,14 +496,10 @@ class S3CS_EDD_S3_Media_Library
             return;
         }
 
-        global $typenow;
-        if ($typenow !== 'download') {
-            return;
-        }
+        global $pagenow, $typenow;
 
         // Only on EDD download edit pages
-        $screen = get_current_screen();
-        if (!$screen || $screen->post_type !== 'download') {
+        if (!($pagenow === 'post.php' || $pagenow === 'post-new.php') || $typenow !== 'download') {
             return;
         }
 

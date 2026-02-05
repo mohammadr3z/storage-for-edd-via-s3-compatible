@@ -162,11 +162,11 @@ body#media-upload {
 
 .s3cs-upload-form {
     background: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #e2e4e7 !important;
     border-radius: 6px;
     padding: 10px 15px;
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
     width: 100%;
     box-sizing: border-box;
 }

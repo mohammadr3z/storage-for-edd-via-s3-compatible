@@ -1,4 +1,4 @@
-/* Modern S3 Library File Table Styles */
+/* Modern S3 Library File Table Styles - matching Dropbox plugin */
 body#media-upload {
     padding: 20px;
     background: #f5f5f5;
@@ -154,6 +154,8 @@ body.rtl .s3cs-nav-back {
     color: #2271b1;
     text-decoration: none;
     font-weight: 600;
+    outline: none;
+    box-shadow: none;
 }
 
 .s3cs-breadcrumbs a:hover {
@@ -190,7 +192,6 @@ body.rtl .s3cs-breadcrumbs {
     unicode-bidi: embed;
 }
 
-/* Ensure Links and Spans follow direction */
 html[dir="rtl"] .s3cs-breadcrumbs a,
 html[dir="rtl"] .s3cs-breadcrumbs span,
 body.rtl .s3cs-breadcrumbs a,
@@ -198,7 +199,19 @@ body.rtl .s3cs-breadcrumbs span {
     display: inline-block;
 }
 
-/* ... existing styles ... */
+/* Back button - Blue primary style (legacy class kept if needed, but button removed from header) */
+.s3cs-header-buttons .button:not(#s3cs-toggle-upload) {
+    background: #2271b1 !important;
+    border-color: #2271b1 !important;
+    color: #fff !important;
+}
+
+.s3cs-header-buttons .button:not(#s3cs-toggle-upload):hover,
+.s3cs-header-buttons .button:not(#s3cs-toggle-upload):focus {
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+    color: #fff !important;
+}
 
 .s3cs-files-table {
     border-collapse: separate;
@@ -279,6 +292,21 @@ body.rtl .s3cs-files-table td.column-size {
     letter-spacing: 0.01em;
 }
 
+.s3cs-files-table .file-size,
+.s3cs-files-table .file-date {
+    color: #50575e;
+    font-size: 0.9em;
+}
+
+.button-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    height: auto;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
 /* Folder row styling */
 .s3cs-folder-row {
     background: #fffbeb;
@@ -289,7 +317,7 @@ body.rtl .s3cs-files-table td.column-size {
     background: #fef3c7;
 }
 
-.s3cs-folder-row .folder-link {
+.s3cs-folder-row .folder-link:not(.button-secondary) {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -305,13 +333,13 @@ body.rtl .s3cs-files-table td.column-size {
     margin: -4px -8px;
 }
 
-.s3cs-folder-row .folder-link:hover {
+.s3cs-folder-row .folder-link:not(.button-secondary):hover {
     color: #2271b1;
     background: rgba(34, 113, 177, 0.08);
 }
 
 /* Small folder icon next to text */
-.s3cs-folder-row .folder-link .dashicons {
+.s3cs-folder-row .folder-link:not(.button-secondary) .dashicons {
     color: #d97706;
     font-size: 18px;
     width: 18px;
@@ -323,15 +351,17 @@ body.rtl .s3cs-files-table td.column-size {
     flex-shrink: 0;
 }
 
-.s3cs-folder-row .folder-link:hover .dashicons {
+.s3cs-folder-row .folder-link:not(.button-secondary):hover .dashicons {
     color: #2271b1;
 }
 
-.s3cs-folder-row .folder-link .file-name {
+.s3cs-folder-row .folder-link:not(.button-secondary) .file-name {
     line-height: 1.4;
     display: inline-block;
     vertical-align: middle;
 }
+
+
 
 /* Notices */
 .s3cs-notice {
@@ -376,22 +406,6 @@ body.rtl .s3cs-notice.success {
 .s3cs-notice-details ul {
     margin: 10px 0 10px 20px;
     list-style: disc;
-}
-
-
-.s3cs-files-table .file-size,
-.s3cs-files-table .file-date {
-    color: #50575e;
-    font-size: 0.9em;
-}
-
-.button-small {
-    padding: 6px 12px;
-    font-size: 13px;
-    line-height: 1.4;
-    height: auto;
-    border-radius: 4px;
-    transition: all 0.2s ease;
 }
 
 /* Responsive Design */
@@ -467,7 +481,6 @@ body.rtl .s3cs-notice.success {
         width: 100%;
         padding: 10px 12px;
         font-size: 16px;
-        /* Prevents zoom on iOS */
         height: 44px;
     }
 }

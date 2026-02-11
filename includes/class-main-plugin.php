@@ -29,8 +29,6 @@ class S3CS_EDDS3CompatibleStorage
         add_filter('edd_requested_file', array($this->downloader, 'generateUrl'), 11, 3);
     }
 
-
-
     /**
      * Show admin notice if S3 credentials are not configured
      */

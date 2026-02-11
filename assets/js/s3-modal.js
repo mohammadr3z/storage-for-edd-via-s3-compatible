@@ -2,41 +2,44 @@
  * S3CS Modal JS
  */
 var S3CSModal = (function ($) {
-    var $modal, $overlay, $iframe, $closeBtn, $skeleton;
+    var $modal, $overlay, $container, $closeBtn, $skeleton;
+
+    // Skeleton rows - shared with S3CSMediaLibrary
+    var skeletonRowsHtml =
+        '<tr><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 60%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 80%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td></tr>' +
+        '<tr><td><div class="s3cs-skeleton-cell" style="width: 55%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 50%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 75%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td></tr>' +
+        '<tr><td><div class="s3cs-skeleton-cell" style="width: 80%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 45%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td></tr>' +
+        '<tr><td><div class="s3cs-skeleton-cell" style="width: 65%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 55%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 85%;"></div></td><td><div class="s3cs-skeleton-cell" style="width: 70%;"></div></td></tr>';
 
     function init() {
         if ($('#s3cs-modal-overlay').length) {
             return;
         }
 
-        // Skeleton HTML structure
+        // Skeleton HTML structure - uses real table with skeleton rows
         var skeletonHtml =
             '<div class="s3cs-skeleton-loader">' +
-            '<div class="s3cs-skeleton-header">' +
-            '<div class="s3cs-skeleton-title"></div>' +
-            '<div class="s3cs-skeleton-button"></div>' +
-            '</div>' +
-            '<div class="s3cs-skeleton-breadcrumb">' +
-            '<div class="s3cs-skeleton-back-btn"></div>' +
-            '<div class="s3cs-skeleton-path"></div>' +
-            '<div class="s3cs-skeleton-search"></div>' +
-            '</div>' +
-            '<div class="s3cs-skeleton-table">' +
-            '<div class="s3cs-skeleton-thead">' +
-            '<div class="s3cs-skeleton-row">' +
-            '<div class="s3cs-skeleton-cell name"></div>' +
-            '<div class="s3cs-skeleton-cell size"></div>' +
-            '<div class="s3cs-skeleton-cell date"></div>' +
-            '<div class="s3cs-skeleton-cell action"></div>' +
+            '<div class="s3cs-header-row">' +
+            '<h3 class="media-title">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_select_file || 'Select a file from S3') + '</h3>' +
+            '<div class="s3cs-header-buttons">' +
+            '<button type="button" class="button button-primary" id="s3cs-toggle-upload">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_upload || 'Upload File') + '</button>' +
             '</div>' +
             '</div>' +
-            '<div class="s3cs-skeleton-row">' +
-            '<div class="s3cs-skeleton-cell name"></div>' +
-            '<div class="s3cs-skeleton-cell size"></div>' +
-            '<div class="s3cs-skeleton-cell date"></div>' +
-            '<div class="s3cs-skeleton-cell action"></div>' +
+            '<div class="s3cs-breadcrumb-nav s3cs-skeleton-breadcrumb">' +
+            '<div class="s3cs-nav-group">' +
+            '<span class="s3cs-nav-back disabled"><span class="dashicons dashicons-arrow-left-alt2"></span></span>' +
+            '<div class="s3cs-breadcrumbs"><div class="s3cs-skeleton-cell" style="width: 120px; height: 18px;"></div></div>' +
             '</div>' +
+            '<div class="s3cs-search-inline"><input type="search" class="s3cs-search-input" placeholder="' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_search || 'Search files...') + '" disabled></div>' +
             '</div>' +
+            '<table class="wp-list-table widefat fixed s3cs-files-table">' +
+            '<thead><tr>' +
+            '<th class="column-primary" style="width: 40%;">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_file_name || 'File Name') + '</th>' +
+            '<th class="column-size" style="width: 20%;">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_file_size || 'File Size') + '</th>' +
+            '<th class="column-date" style="width: 25%;">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_last_modified || 'Last Modified') + '</th>' +
+            '<th class="column-actions" style="width: 15%;">' + (typeof s3cs_browse_button !== 'undefined' && s3cs_browse_button.i18n_actions || 'Actions') + '</th>' +
+            '</tr></thead>' +
+            '<tbody>' + skeletonRowsHtml + '</tbody></table>' +
             '</div>';
 
         // Create DOM structure with skeleton
@@ -51,7 +54,7 @@ var S3CSModal = (function ($) {
             '</div>' +
             '<div class="s3cs-modal-content">' +
             skeletonHtml +
-            '<iframe class="s3cs-modal-frame loading" src=""></iframe>' +
+            '<div id="s3cs-modal-container" class="s3cs-modal-container hidden"></div>' +
             '</div>' +
             '</div>' +
             '</div>';
@@ -60,7 +63,7 @@ var S3CSModal = (function ($) {
 
         $overlay = $('#s3cs-modal-overlay');
         $modal = $overlay.find('.s3cs-modal');
-        $iframe = $overlay.find('.s3cs-modal-frame');
+        $container = $overlay.find('#s3cs-modal-container');
         $title = $overlay.find('.s3cs-modal-title');
         $closeBtn = $overlay.find('.s3cs-modal-close');
         $skeleton = $overlay.find('.s3cs-skeleton-loader');
@@ -80,31 +83,34 @@ var S3CSModal = (function ($) {
             }
         });
 
-        // Handle iframe load event
-        $iframe.on('load', function () {
+        // Global event for content loaded
+        $(document).on('s3cs_edd_content_loaded', function () {
             $skeleton.addClass('hidden');
-            $iframe.removeClass('loading').addClass('loaded');
+            $container.removeClass('hidden');
         });
     }
 
-    function open(url, title) {
+    function open(url, title, isPath) {
         init();
         $title.text(title || 'Select File');
 
-        // Reset state: show skeleton, hide iframe
+        // Reset state: show skeleton, hide container
         $skeleton.removeClass('hidden');
-        $iframe.removeClass('loaded').addClass('loading');
+        $container.addClass('hidden');
 
-        $iframe.attr('src', url);
         $overlay.addClass('open');
         $('body').css('overflow', 'hidden');
+
+        // Trigger library load
+        if (window.S3CSMediaLibrary) {
+            window.S3CSMediaLibrary.load(url || '', isPath);
+        }
     }
 
     function close() {
         if ($overlay) {
             $overlay.removeClass('open');
-            $iframe.attr('src', '');
-            $iframe.removeClass('loaded').addClass('loading');
+            $container.empty().addClass('hidden');
             $skeleton.removeClass('hidden');
             $('body').css('overflow', '');
         }
@@ -112,7 +118,8 @@ var S3CSModal = (function ($) {
 
     return {
         open: open,
-        close: close
+        close: close,
+        getSkeletonRows: function () { return skeletonRowsHtml; }
     };
 
 })(jQuery);

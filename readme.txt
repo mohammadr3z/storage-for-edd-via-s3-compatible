@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 1.1.10
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -160,6 +160,9 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.2.0 =
+* Major Refactor: Replaced legacy iframe browser with modern AJAX implementation for improved performance.
 
 = 1.1.10 =
 * Improved: UI styles and enhanced layout consistency for better harmony.

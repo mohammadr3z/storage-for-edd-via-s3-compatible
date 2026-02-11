@@ -15,9 +15,9 @@ jQuery(function ($) {
         window.s3cs_current_name_input = $row.find('input[name^="edd_download_files"][name$="[name]"]');
         window.s3cs_current_url_input = $row.find('input[name^="edd_download_files"][name$="[file]"]');
 
-        // Context-Aware: Extract folder path from current URL
         var currentUrl = window.s3cs_current_url_input.val();
         var folderPath = '';
+        // Using s3cs_browse_button object which should be localized
         var urlPrefix = s3cs_browse_button.url_prefix;
 
         if (currentUrl && currentUrl.indexOf(urlPrefix) === 0) {
@@ -30,12 +30,8 @@ jQuery(function ($) {
             }
         }
 
-        var modalUrl = s3cs_browse_button.modal_url + '&_wpnonce=' + s3cs_browse_button.nonce;
-        if (folderPath) {
-            modalUrl += '&path=' + encodeURIComponent(folderPath);
-        }
-
         // Open Modal
-        S3CSModal.open(modalUrl, s3cs_browse_button.modal_title);
+        // Pass true for isPath to indicate this is a pre-filled path
+        S3CSModal.open(folderPath, s3cs_browse_button.modal_title, true);
     });
 });

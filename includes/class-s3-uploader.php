@@ -19,7 +19,10 @@ class S3CS_EDD_S3_Uploader
         $this->client = new S3CS_EDD_S3_Client();
 
         // Register upload handler for admin-post.php
-        add_action('admin_post_s3cs_upload', array($this, 'performFileUpload'));
+        add_action('admin_post_s3cs_edd_upload', array($this, 'performFileUpload'));
+
+        // Register AJAX upload handler
+        add_action('wp_ajax_s3cs_edd_ajax_upload', array($this, 'ajaxUpload'));
     }
 
     /**
@@ -29,6 +32,12 @@ class S3CS_EDD_S3_Uploader
     {
         if (!is_admin()) {
             return;
+        }
+
+        // Verify Nonce
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verification is happening right here
+        if (!isset($_POST['s3cs_edd_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['s3cs_edd_nonce'])), 's3cs_edd_upload')) {
+            wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
         }
 
         $uploadCapability = apply_filters('s3cs_edd_upload_cap', 'edit_products');
@@ -45,97 +54,9 @@ class S3CS_EDD_S3_Uploader
             $path .= '/';
         }
 
-        // Check and sanitize file name
-        $filename = '';
-        if (isset($_FILES['s3cs_edd_file']['name']) && !empty($_FILES['s3cs_edd_file']['name'])) {
-            $filename = $path . sanitize_file_name($_FILES['s3cs_edd_file']['name']);
-        } else {
-            wp_die(esc_html__('No file selected for upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-        }
-
-        $client = $this->client->getClient();
-        $bucket = $this->config->getBucket();
-
-        if (!$client || !$bucket) {
-            wp_die(esc_html__('S3 configuration is incomplete.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-        }
-
         try {
-            $endpoint = $this->config->getEndpoint();
-            $accessKey = $this->config->getAccessKey();
-            $secretKey = $this->config->getSecretKey();
-            $region = $this->config->getRegion();
-
-            // Create authorization header
-            $date = gmdate('Ymd\\THis\\Z');
-            $shortDate = gmdate('Ymd');
-            $service = 's3';
-
-            // Calculate content hash with security check
-            $fileContent = '';
-            if (
-                isset($_FILES['s3cs_edd_file']['tmp_name']) &&
-                is_uploaded_file($_FILES['s3cs_edd_file']['tmp_name']) &&
-                is_readable($_FILES['s3cs_edd_file']['tmp_name'])
-            ) {
-                $fileContent = file_get_contents($_FILES['s3cs_edd_file']['tmp_name']);
-                if ($fileContent === false) {
-                    wp_die(esc_html__('Unable to read uploaded file.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-                }
-            } else {
-                wp_die(esc_html__('Invalid file upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            }
-
-            $contentHash = hash('sha256', $fileContent);
-
-            // Detect and validate Content-Type
-            $filetype = wp_check_filetype_and_ext($_FILES['s3cs_edd_file']['tmp_name'], $_FILES['s3cs_edd_file']['name']);
-            $contentType = !empty($filetype['type']) ? $filetype['type'] : 'application/octet-stream';
-
-            // Encode filename parts for Canonical URI to match AWS requirements and Guzzle's behavior
-            $explodedFilename = explode('/', $filename);
-            $encodedFilenameParts = array_map('rawurlencode', $explodedFilename);
-            $encodedFilename = implode('/', $encodedFilenameParts);
-
-            // Create canonical request
-            $method = 'PUT';
-            $canonicalUri = "/$bucket/$encodedFilename";
-            $canonicalQueryString = '';
-            $canonicalHeaders = "content-length:" . strlen($fileContent) . "\ncontent-type:$contentType\nhost:" . wp_parse_url($endpoint, PHP_URL_HOST) . "\nx-amz-content-sha256:$contentHash\nx-amz-date:$date\n";
-            $signedHeaders = 'content-length;content-type;host;x-amz-content-sha256;x-amz-date';
-
-            $canonicalRequest = "$method\n$canonicalUri\n$canonicalQueryString\n$canonicalHeaders\n$signedHeaders\n$contentHash";
-
-            // Create string to sign
-            $algorithm = 'AWS4-HMAC-SHA256';
-            $credentialScope = "$shortDate/$region/$service/aws4_request";
-            $stringToSign = "$algorithm\n$date\n$credentialScope\n" . hash('sha256', $canonicalRequest);
-
-            // Calculate signature
-            $kSecret = 'AWS4' . $secretKey;
-            $kDate = hash_hmac('sha256', $shortDate, $kSecret, true);
-            $kRegion = hash_hmac('sha256', $region, $kDate, true);
-            $kService = hash_hmac('sha256', $service, $kRegion, true);
-            $kSigning = hash_hmac('sha256', 'aws4_request', $kService, true);
-            $signature = hash_hmac('sha256', $stringToSign, $kSigning);
-
-            // Create authorization header
-            $authorization = "$algorithm Credential=$accessKey/$credentialScope, SignedHeaders=$signedHeaders, Signature=$signature";
-
-            // Upload file
-            // Use encoded filename to prevent double encoding or mismatches
-            $response = $client->request('PUT', "/$bucket/$encodedFilename", [
-                'headers' => [
-                    'Content-Type' => $contentType,
-                    'Content-Length' => strlen($fileContent),
-                    'Host' => wp_parse_url($endpoint, PHP_URL_HOST),
-                    'X-Amz-Content-SHA256' => $contentHash,
-                    'X-Amz-Date' => $date,
-                    'Authorization' => $authorization
-                ],
-                'body' => $fileContent
-            ]);
-
+            // Processing upload
+            $path_display = $this->processUpload($_FILES['s3cs_edd_file'], $path);
 
             // Create secure redirect URL
             $referer = wp_get_referer();
@@ -146,7 +67,7 @@ class S3CS_EDD_S3_Uploader
             $redirectURL = add_query_arg(
                 array(
                     's3cs_edd_success'  => '1',
-                    's3cs_edd_filename' => rawurlencode($filename),
+                    's3cs_edd_filename' => rawurlencode($path_display),
                 ),
                 $referer
             );
@@ -159,17 +80,175 @@ class S3CS_EDD_S3_Uploader
     }
 
     /**
-     * Validate file upload.
-     * @return bool
+     * Handle AJAX file upload.
      */
-    private function validateUpload()
+    public function ajaxUpload()
     {
-        // Check nonce first
-        if (!isset($_POST['s3cs_edd_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['s3cs_edd_nonce'])), 's3cs_edd_upload')) {
-            wp_die(esc_html__('Security check failed.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            return false;
+        check_ajax_referer('s3cs_edd_upload', 's3cs_edd_nonce');
+
+        $uploadCapability = apply_filters('s3cs_edd_upload_cap', 'edit_products');
+        if (!current_user_can($uploadCapability)) {
+            wp_send_json_error(esc_html__('You do not have permission to upload files to S3.', 'storage-for-edd-via-s3-compatible'));
         }
 
+        // Use checkUploadValidation for better AJAX error handling
+        $validation = $this->checkUploadValidation();
+        if ($validation !== true) {
+            wp_send_json_error($validation);
+        }
+
+        $path = isset($_POST['s3cs_edd_path']) ? sanitize_text_field(wp_unslash($_POST['s3cs_edd_path'])) : '';
+        if (!empty($path) && substr($path, -1) !== '/') {
+            $path .= '/';
+        }
+
+        if (!$this->config->isConfigured()) {
+            wp_send_json_error(esc_html__('S3 is not configured.', 'storage-for-edd-via-s3-compatible'));
+        }
+
+        try {
+            $path_display = $this->processUpload($_FILES['s3cs_edd_file'], $path);
+
+            // Return success with file info
+            wp_send_json_success(array(
+                'message' => esc_html__('File uploaded successfully!', 'storage-for-edd-via-s3-compatible'),
+                'filename' => basename($path_display),
+                'path' => $path_display,
+                // Ensure data keys match what JS expects
+                's3cs_link' => ltrim($path_display, '/')
+            ));
+        } catch (Exception $e) {
+            $this->config->debug('AJAX upload error: ' . $e->getMessage());
+            wp_send_json_error($e->getMessage());
+        }
+    }
+
+    /**
+     * Core upload processing logic
+     * 
+     * @param array $file_array $_FILES item
+     * @param string $path Target folder path
+     * @return string Uploaded file path (display path)
+     * @throws Exception
+     */
+    private function processUpload($file_array, $path)
+    {
+        // Check and sanitize file name
+        $filename = '';
+        if (isset($file_array['name']) && !empty($file_array['name'])) {
+            $filename = $path . sanitize_file_name($file_array['name']);
+        } else {
+            throw new Exception(esc_html__('No file selected.', 'storage-for-edd-via-s3-compatible'));
+        }
+
+        $client = $this->client->getClient();
+        $bucket = $this->config->getBucket();
+
+        if (!$client || !$bucket) {
+            throw new Exception(esc_html__('S3 configuration is incomplete.', 'storage-for-edd-via-s3-compatible'));
+        }
+
+        $endpoint = $this->config->getEndpoint();
+        $accessKey = $this->config->getAccessKey();
+        $secretKey = $this->config->getSecretKey();
+        $region = $this->config->getRegion();
+
+        // Create authorization header
+        $date = gmdate('Ymd\\THis\\Z');
+        $shortDate = gmdate('Ymd');
+        $service = 's3';
+
+        // Read file content securely
+        // Read file content securely
+        // NOTE: We now use streaming upload to avoid loading file into memory
+        if (
+            !isset($file_array['tmp_name']) ||
+            !is_uploaded_file($file_array['tmp_name']) ||
+            !is_readable($file_array['tmp_name'])
+        ) {
+            throw new Exception(esc_html__('Invalid file upload.', 'storage-for-edd-via-s3-compatible'));
+        }
+
+        $filePath = $file_array['tmp_name'];
+
+        // Calculate hash efficiently without loading file
+        $contentHash = hash_file('sha256', $filePath);
+        $fileSize = filesize($filePath);
+
+        // Detect and validate Content-Type
+        $filetype = wp_check_filetype_and_ext($filePath, $file_array['name']);
+
+        // Better MIME type detection
+        if (!empty($filetype['type'])) {
+            $contentType = $filetype['type'];
+        } elseif (function_exists('mime_content_type')) {
+            $contentType = mime_content_type($filePath);
+        } else {
+            $contentType = 'application/octet-stream';
+        }
+
+        // Encode filename parts for Canonical URI to match AWS requirements and Guzzle's behavior
+        $explodedFilename = explode('/', $filename);
+        $encodedFilenameParts = array_map('rawurlencode', $explodedFilename);
+        $encodedFilename = implode('/', $encodedFilenameParts);
+
+        // Create canonical request
+        $method = 'PUT';
+        $canonicalUri = "/$bucket/$encodedFilename";
+        $canonicalQueryString = '';
+        $canonicalHeaders = "content-length:$fileSize\ncontent-type:$contentType\nhost:" . wp_parse_url($endpoint, PHP_URL_HOST) . "\nx-amz-content-sha256:$contentHash\nx-amz-date:$date\n";
+        $signedHeaders = 'content-length;content-type;host;x-amz-content-sha256;x-amz-date';
+
+        $canonicalRequest = "$method\n$canonicalUri\n$canonicalQueryString\n$canonicalHeaders\n$signedHeaders\n$contentHash";
+
+        // Create string to sign
+        $algorithm = 'AWS4-HMAC-SHA256';
+        $credentialScope = "$shortDate/$region/$service/aws4_request";
+        $stringToSign = "$algorithm\n$date\n$credentialScope\n" . hash('sha256', $canonicalRequest);
+
+        // Calculate signature
+        $kSecret = 'AWS4' . $secretKey;
+        $kDate = hash_hmac('sha256', $shortDate, $kSecret, true);
+        $kRegion = hash_hmac('sha256', $region, $kDate, true);
+        $kService = hash_hmac('sha256', $service, $kRegion, true);
+        $kSigning = hash_hmac('sha256', 'aws4_request', $kService, true);
+        $signature = hash_hmac('sha256', $stringToSign, $kSigning);
+
+        // Create authorization header
+        $authorization = "$algorithm Credential=$accessKey/$credentialScope, SignedHeaders=$signedHeaders, Signature=$signature";
+
+        // Open stream
+        $stream = fopen($filePath, 'r');
+
+        try {
+            // Upload file
+            // Use encoded filename to prevent double encoding or mismatches
+            $response = $client->request('PUT', "/$bucket/$encodedFilename", [
+                'headers' => [
+                    'Content-Type' => $contentType,
+                    'Content-Length' => $fileSize,
+                    'Host' => wp_parse_url($endpoint, PHP_URL_HOST),
+                    'X-Amz-Content-SHA256' => $contentHash,
+                    'X-Amz-Date' => $date,
+                    'Authorization' => $authorization
+                ],
+                'body' => $stream
+            ]);
+        } finally {
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
+        }
+
+        return $filename;
+    }
+
+    /**
+     * Helper to return validation result without dying (for AJAX)
+     * @return bool|string Returns true on success, or error message string on failure
+     */
+    private function checkUploadValidation()
+    {
         // Check for file existence and its components
         if (
             !isset($_FILES['s3cs_edd_file']) ||
@@ -178,42 +257,51 @@ class S3CS_EDD_S3_Uploader
             !isset($_FILES['s3cs_edd_file']['size']) ||
             empty($_FILES['s3cs_edd_file']['name'])
         ) {
-            wp_die(esc_html__('Please select a file to upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            return false;
+            return esc_html__('Please select a file to upload.', 'storage-for-edd-via-s3-compatible');
         }
 
         // Check uploaded file security
         if (!is_uploaded_file($_FILES['s3cs_edd_file']['tmp_name'])) {
-            wp_die(esc_html__('Invalid file upload.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            return false;
+            return esc_html__('Invalid file upload.', 'storage-for-edd-via-s3-compatible');
         }
 
         // Validate file type
         if (!$this->isAllowedFileType($_FILES['s3cs_edd_file']['name'])) {
-            wp_die(esc_html__('File type not allowed. Only safe file types are permitted.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            return false;
+            return esc_html__('File type not allowed. Only safe file types are permitted.', 'storage-for-edd-via-s3-compatible');
         }
 
         // Validate Content-Type (MIME type)
         if (!$this->validateFileContentType($_FILES['s3cs_edd_file'])) {
-            wp_die(esc_html__('File content type validation failed. The file may be corrupted or have an incorrect extension.', 'storage-for-edd-via-s3-compatible'), esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
-            return false;
+            return esc_html__('File content type validation failed. The file may be corrupted or have an incorrect extension.', 'storage-for-edd-via-s3-compatible');
         }
 
         // Check and sanitize file size
         $fileSize = absint($_FILES['s3cs_edd_file']['size']);
         $maxSize = wp_max_upload_size();
         if ($fileSize > $maxSize || $fileSize <= 0) {
-            wp_die(
+            return sprintf(
                 // translators: %s: Maximum upload file size.
-                sprintf(esc_html__('File size too large. Maximum allowed size is %s', 'storage-for-edd-via-s3-compatible'), esc_html(size_format($maxSize))),
-                esc_html__('Error', 'storage-for-edd-via-s3-compatible'),
-                array('back_link' => true)
+                esc_html__('File size too large. Maximum allowed size is %s', 'storage-for-edd-via-s3-compatible'),
+                esc_html(size_format($maxSize))
             );
-            return false;
         }
 
         return true;
+    }
+
+    /**
+     * Validate file upload (legacy wrapper for non-AJAX calls).
+     * @return bool
+     */
+    private function validateUpload()
+    {
+        $result = $this->checkUploadValidation();
+        if ($result === true) {
+            return true;
+        }
+
+        wp_die($result, esc_html__('Error', 'storage-for-edd-via-s3-compatible'), array('back_link' => true));
+        return false;
     }
 
     /**

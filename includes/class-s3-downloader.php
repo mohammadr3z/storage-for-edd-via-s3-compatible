@@ -81,9 +81,20 @@ class S3CS_EDD_S3_Downloader
         $endpoint_parts = wp_parse_url($endpoint);
         $host = $endpoint_parts['host'];
 
+        // Encode object key segments for correct URI and Canonical URI
+        // Explode by / to correctly encode each segment without encoding the slashes
+        $key_parts = explode('/', $object_key);
+        $encoded_key_parts = array_map('rawurlencode', $key_parts);
+        $encoded_object_key = implode('/', $encoded_key_parts);
+
         // Standard path-style S3 URL
-        $uri = '/' . $bucket . '/' . $object_key;
+        $uri = '/' . $bucket . '/' . $encoded_object_key;
         $host_header = $host;
+
+        // Sanitize filename to prevent header injection
+        $filename = basename($object_key);
+        $sanitized_filename = str_replace(array('"', "\r", "\n"), '', $filename);
+
 
         // Request parameters
         $query_params = [
@@ -91,14 +102,13 @@ class S3CS_EDD_S3_Downloader
             'X-Amz-Credential' => $accessKey . '/' . $date_ymd . '/' . $region . '/s3/aws4_request',
             'X-Amz-Date' => $date_timestamp,
             'X-Amz-Expires' => $expires,
-            'response-content-disposition' => 'attachment; filename="' . basename($object_key) . '"',
+            'response-content-disposition' => 'attachment; filename="' . $sanitized_filename . '"',
             'X-Amz-SignedHeaders' => 'host'
         ];
 
         // Canonical request
-        $canonical_uri = rawurlencode($uri);
-        $canonical_uri = str_replace('%2F', '/', $canonical_uri);
-        $canonical_uri = str_replace('%7E', '~', $canonical_uri);
+        // Use the already encoded URI for canonical URI to avoid double encoding or mismatches
+        $canonical_uri = $uri;
 
         // Build canonical query string
         ksort($query_params);

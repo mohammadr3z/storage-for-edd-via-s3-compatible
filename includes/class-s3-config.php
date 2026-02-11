@@ -123,7 +123,7 @@ class S3CS_EDD_S3_Config
 
     public function getExpiryMinutes()
     {
-        $minutes = intval(edd_get_option(self::KEY_EXPIRY_MINUTES, 3));
+        $minutes = intval(edd_get_option(self::KEY_EXPIRY_MINUTES, 5));
 
         return max(1, min(60, $minutes));
     }

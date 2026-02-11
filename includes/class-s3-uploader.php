@@ -175,6 +175,10 @@ class S3CS_EDD_S3_Uploader
         $contentHash = hash_file('sha256', $filePath);
         $fileSize = filesize($filePath);
 
+        if ($contentHash === false || $fileSize === false) {
+            throw new Exception(esc_html__('Failed to calculate file hash or size.', 'storage-for-edd-via-s3-compatible'));
+        }
+
         // Detect and validate Content-Type
         $filetype = wp_check_filetype_and_ext($filePath, $file_array['name']);
 
@@ -219,6 +223,9 @@ class S3CS_EDD_S3_Uploader
 
         // Open stream
         $stream = fopen($filePath, 'r');
+        if ($stream === false) {
+            throw new Exception(esc_html__('Failed to open file stream.', 'storage-for-edd-via-s3-compatible'));
+        }
 
         try {
             // Upload file
@@ -234,6 +241,16 @@ class S3CS_EDD_S3_Uploader
                 ],
                 'body' => $stream
             ]);
+
+            $statusCode = $response->getStatusCode();
+            if ($statusCode < 200 || $statusCode >= 300) {
+                throw new Exception(sprintf(
+                    // translators: %1$s: Status code, %2$s: Reason phrase
+                    esc_html__('S3 upload failed with status: %1$s %2$s', 'storage-for-edd-via-s3-compatible'),
+                    $statusCode,
+                    $response->getReasonPhrase()
+                ));
+            }
         } finally {
             if (is_resource($stream)) {
                 fclose($stream);

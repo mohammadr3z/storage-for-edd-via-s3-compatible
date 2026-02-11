@@ -163,6 +163,11 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 
 = 1.2.0 =
 * Major Refactor: Replaced legacy iframe browser with modern AJAX implementation for improved performance.
+* Fixed: Critical issue where S3 uploads were considered successful despite 4xx/5xx HTTP errors.
+* Fixed: Signature mismatch in download presigned URLs for files with special characters or spaces.
+* Added: Strict pre-upload file validation (hash, size, and stream) for enhanced reliability.
+* Security: Sanitized `response-content-disposition` header in download links to prevent header injection.
+
 
 = 1.1.10 =
 * Improved: UI styles and enhanced layout consistency for better harmony.
@@ -252,7 +257,6 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 * Fixed: All output from internationalization functions properly escaped to prevent XSS vulnerabilities
 * Fixed: Proper nonce verification for all form data processing to prevent CSRF attacks
 * Fixed: Removed production-unsafe debug code and replaced with WordPress-compatible logging
-* Changed: Default download link expiry reduced to 3 minutes for better security
 
 = 1.0.7 =
 * Automatically prepended `https://` to Endpoint URL to prevent XML parsing errors.

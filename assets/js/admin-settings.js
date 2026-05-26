@@ -22,4 +22,22 @@ jQuery(document).ready(function ($) {
     $('.edd-s3cs-credential').on('input change', function () {
         s3cs_checkCredentials();
     });
+
+    // Custom Region toggle
+    function s3cs_toggleCustomRegion() {
+        var $checkbox = $('input[name="edd_settings[s3cs_edd_custom_region_enabled]"]');
+        var $regionRow = $('input[name="edd_settings[s3cs_edd_custom_region]"]').closest('tr');
+
+        if ($checkbox.is(':checked')) {
+            $regionRow.show();
+        } else {
+            $regionRow.hide();
+        }
+    }
+
+    s3cs_toggleCustomRegion();
+
+    $('input[name="edd_settings[s3cs_edd_custom_region_enabled]"]').on('change', function () {
+        s3cs_toggleCustomRegion();
+    });
 });

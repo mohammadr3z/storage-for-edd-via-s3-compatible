@@ -3,8 +3,8 @@ author: mohammadr3z
 Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 1.2.0
+Tested up to: 7.0
+Stable tag: 1.2.1
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,7 @@ Storage for EDD via S3-Compatible is a powerful extension for Easy Digital Downl
    * Access Key
    * Secret Key
    * Endpoint URL (e.g., https://s3.example.com)
+   * Custom Region (Optional, check to specify a custom region like `eu-west-3` for regional AWS S3 buckets or specific S3-compatible providers)
    * Bucket Name
 3. Set the download link expiry time (in minutes, between 1-60 minutes)
 4. Save the settings
@@ -160,6 +161,10 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.2.1 =
+* Added: Custom Region configuration setting to manually define S3 regions for AWS S3 and custom S3 endpoints, ensuring accurate Signature V4 signing and bucket listings.
+* Tested: Fully compatible with WordPress 7.0.
 
 = 1.2.0 =
 * Major Refactor: Replaced legacy iframe browser with modern AJAX implementation for improved performance.

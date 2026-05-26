@@ -17,6 +17,8 @@ class S3CS_EDD_S3_Config
     const KEY_ENDPOINT = 's3cs_edd_endpoint';
     const KEY_REGION = 's3cs_edd_region';
     const KEY_EXPIRY_MINUTES = 's3cs_edd_expiry_minutes';
+    const KEY_CUSTOM_REGION_ENABLED = 's3cs_edd_custom_region_enabled';
+    const KEY_CUSTOM_REGION = 's3cs_edd_custom_region';
     const URL_PREFIX = 'edd-s3cs://';
 
     /**
@@ -116,9 +118,41 @@ class S3CS_EDD_S3_Config
         return $clean_endpoint;
     }
 
+    /**
+     * Check if custom region is enabled
+     * @return bool
+     */
+    public function isCustomRegionEnabled()
+    {
+        return edd_get_option(self::KEY_CUSTOM_REGION_ENABLED, 'no') === 'yes';
+    }
+
+    /**
+     * Get the custom region value
+     * @return string
+     */
+    public function getCustomRegion()
+    {
+        return edd_get_option(self::KEY_CUSTOM_REGION, '');
+    }
+
+    /**
+     * Get S3 Region
+     * 
+     * Returns the custom region if enabled and set,
+     * otherwise returns the default 'us-east-1'.
+     * 
+     * @return string
+     */
     public function getRegion()
     {
-        return edd_get_option(self::KEY_REGION, 'us-east-1');
+        if ($this->isCustomRegionEnabled()) {
+            $custom = $this->getCustomRegion();
+            if (!empty($custom)) {
+                return $custom;
+            }
+        }
+        return 'us-east-1';
     }
 
     public function getExpiryMinutes()

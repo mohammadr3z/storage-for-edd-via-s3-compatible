@@ -67,6 +67,22 @@ class S3CS_EDD_S3_Admin_Settings
                 'placeholder' => 'https://'
             ),
             array(
+                'id' => S3CS_EDD_S3_Config::KEY_CUSTOM_REGION_ENABLED,
+                'name' => __('Custom Region', 'storage-for-edd-via-s3-compatible'),
+                'desc' => __('Enable custom region', 'storage-for-edd-via-s3-compatible') . '<p class="description">' . __('Enable this if your S3 endpoint requires a specific region for signing requests.', 'storage-for-edd-via-s3-compatible') . '</p>',
+                'type' => 'checkbox',
+                'class' => 'edd-s3cs-custom-region-toggle'
+            ),
+            array(
+                'id' => S3CS_EDD_S3_Config::KEY_CUSTOM_REGION,
+                'name' => __('Region', 'storage-for-edd-via-s3-compatible'),
+                'desc' => __('Enter your S3 region (e.g. eu-west-3, us-west-2). Default is us-east-1 when disabled.', 'storage-for-edd-via-s3-compatible'),
+                'type' => 'text',
+                'size' => 'regular',
+                'placeholder' => 'us-east-1',
+                'class' => 'edd-s3cs-custom-region-field'
+            ),
+            array(
                 'id' => S3CS_EDD_S3_Config::KEY_ACCESS_KEY,
                 'name' => __('Access Key', 'storage-for-edd-via-s3-compatible'),
                 'desc' => __('Enter your S3 Access Key', 'storage-for-edd-via-s3-compatible'),

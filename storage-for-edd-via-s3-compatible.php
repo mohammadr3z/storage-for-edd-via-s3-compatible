@@ -3,9 +3,8 @@
 /**
  * Plugin Name: Storage for EDD via S3-Compatible
  * Description: Enable secure cloud storage and delivery of your digital products through S3-compatible services for Easy Digital Downloads.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: mohammadr3z
- * Requires Plugins: easy-digital-downloads
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: storage-for-edd-via-s3-compatible
@@ -31,7 +30,7 @@ if (!defined('S3CS_EDD_PLUGIN_URL')) {
     define('S3CS_EDD_PLUGIN_URL', plugin_dir_url(__FILE__));
 }
 if (!defined('S3CS_EDD_VERSION')) {
-    define('S3CS_EDD_VERSION', '1.2.1');
+    define('S3CS_EDD_VERSION', '1.2.2');
 }
 
 // Load plugin classes
@@ -45,5 +44,19 @@ require_once S3CS_EDD_PLUGIN_DIR . 'includes/class-main-plugin.php';
 
 // Initialize plugin on plugins_loaded
 add_action('plugins_loaded', function () {
+    if (!class_exists('Easy_Digital_Downloads')) {
+        add_action('admin_notices', function () {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <strong><?php esc_html_e('Storage for EDD via S3-Compatible:', 'storage-for-edd-via-s3-compatible'); ?></strong>
+                    <?php esc_html_e('Easy Digital Downloads (Free or Pro) is required but not active. Please install and activate it first.', 'storage-for-edd-via-s3-compatible'); ?>
+                </p>
+            </div>
+            <?php
+        });
+        return;
+    }
+
     new S3CS_EDDS3CompatibleStorage();
 });

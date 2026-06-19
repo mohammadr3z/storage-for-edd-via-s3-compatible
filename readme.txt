@@ -4,7 +4,7 @@ Contributors: mohammadr3z
 Tags: easy-digital-downloads, s3, storage, s3-compatible, edd
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -161,6 +161,9 @@ add_filter('s3cs_edd_allowed_mime_types', 'customize_allowed_mime_types');
 3. File upload to S3 storage interface
 
 == Changelog ==
+
+= 1.2.2 =
+* Updated: Internal vendor dependencies.
 
 = 1.2.1 =
 * Added: Custom Region configuration setting to manually define S3 regions for AWS S3 and custom S3 endpoints, ensuring accurate Signature V4 signing and bucket listings.
